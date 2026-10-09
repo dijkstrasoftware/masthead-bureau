@@ -1,0 +1,384 @@
+{
+  "label": "Bureau · Contact",
+  "description": "Contact details from site settings, an optional map and questions.",
+  "page_options": [
+    {
+      "key": "show_title",
+      "label": "Show hero",
+      "type": "boolean",
+      "default": true,
+      "description": "Untick to hide the title block (it stays available to screen readers).",
+      "category": "Hero"
+    },
+    {
+      "key": "hero_style",
+      "label": "Hero style",
+      "type": "select",
+      "options": [
+        "editorial",
+        "split",
+        "banner",
+        "minimal"
+      ],
+      "default": "editorial",
+      "description": "Editorial: large type, image below. Split: text beside image. Banner: text over image. Minimal: compact title.",
+      "category": "Hero"
+    },
+    {
+      "key": "hero_align",
+      "label": "Hero alignment",
+      "type": "select",
+      "options": [
+        "left",
+        "center"
+      ],
+      "default": "left",
+      "category": "Hero"
+    },
+    {
+      "key": "eyebrow",
+      "label": "Eyebrow",
+      "type": "string",
+      "default": "Contact",
+      "category": "Hero"
+    },
+    {
+      "key": "headline",
+      "label": "Headline",
+      "type": "string",
+      "default": "Let's talk.",
+      "description": "Defaults to the page title.",
+      "category": "Hero"
+    },
+    {
+      "key": "emphasis",
+      "label": "Emphasised words",
+      "type": "string",
+      "default": "",
+      "description": "Words from the headline to set in italic accent.",
+      "category": "Hero"
+    },
+    {
+      "key": "intro",
+      "label": "Introduction",
+      "type": "text",
+      "default": "Tell us a little about your organisation and what you have in mind.",
+      "category": "Hero"
+    },
+    {
+      "key": "hero_image",
+      "label": "Hero image",
+      "type": "file",
+      "default": "",
+      "category": "Hero"
+    },
+    {
+      "key": "hero_image_alt",
+      "label": "Hero image description",
+      "type": "string",
+      "default": "",
+      "category": "Hero"
+    },
+    {
+      "key": "hero_image_position",
+      "label": "Hero image focal point",
+      "type": "select",
+      "options": [
+        "center",
+        "top",
+        "bottom",
+        "left",
+        "right"
+      ],
+      "default": "center",
+      "category": "Hero"
+    },
+    {
+      "key": "primary_label",
+      "label": "Primary button",
+      "type": "string",
+      "default": "",
+      "category": "Hero"
+    },
+    {
+      "key": "primary_url",
+      "label": "Primary button link",
+      "type": "string",
+      "default": "",
+      "category": "Hero"
+    },
+    {
+      "key": "secondary_label",
+      "label": "Secondary button",
+      "type": "string",
+      "default": "",
+      "category": "Hero"
+    },
+    {
+      "key": "secondary_url",
+      "label": "Secondary button link",
+      "type": "string",
+      "default": "",
+      "category": "Hero"
+    },
+    {
+      "key": "page_width",
+      "label": "Page width",
+      "type": "select",
+      "options": [
+        "standard",
+        "narrow",
+        "wide",
+        "full"
+      ],
+      "default": "standard",
+      "category": "Page"
+    },
+    {
+      "key": "background",
+      "label": "Background",
+      "type": "select",
+      "options": [
+        "default",
+        "surface",
+        "dark",
+        "primary"
+      ],
+      "default": "default",
+      "category": "Page"
+    },
+    {
+      "key": "accent_style",
+      "label": "Accent",
+      "type": "select",
+      "options": [
+        "secondary",
+        "primary",
+        "monochrome"
+      ],
+      "default": "secondary",
+      "category": "Page"
+    },
+    {
+      "key": "show_navigation",
+      "label": "Show navigation",
+      "type": "boolean",
+      "default": true,
+      "category": "Page"
+    },
+    {
+      "key": "show_breadcrumbs",
+      "label": "Show breadcrumbs",
+      "type": "boolean",
+      "default": true,
+      "category": "Page"
+    },
+    {
+      "key": "show_cta",
+      "label": "Show closing call to action",
+      "type": "boolean",
+      "default": false,
+      "category": "Page"
+    },
+    {
+      "key": "show_footer",
+      "label": "Show footer",
+      "type": "boolean",
+      "default": true,
+      "category": "Page"
+    },
+    {
+      "key": "sections",
+      "label": "Sections",
+      "type": "list",
+      "item_label": "Section",
+      "category": "Sections",
+      "description": "Build the page from sections. Drag to reorder. Untick Show to hide one without losing it. A section with nothing to show is left out.",
+      "fields": [
+        {
+          "key": "show",
+          "label": "Show",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "key": "type",
+          "label": "Type",
+          "type": "select",
+          "options": [
+            "text",
+            "services",
+            "work",
+            "testimonials",
+            "team",
+            "clients",
+            "stats",
+            "points",
+            "faq",
+            "contact",
+            "journal",
+            "cta"
+          ],
+          "default": "text",
+          "description": "Text = about, story or mission copy. Points = values or process (from Points below). FAQ uses Questions below. Stats, clients and contact come from site settings."
+        },
+        {
+          "key": "layout",
+          "label": "Layout",
+          "type": "select",
+          "options": [
+            "standard",
+            "alternate",
+            "compact"
+          ],
+          "default": "standard",
+          "description": "Services: list · cards · index. Work: grid · alternating · index. Testimonials: lead quote · grid · single quote. Team: portraits · rows · names. Text: image right · image left · statement. Clients: logos · name wall. Stats & points: columns · rows. Journal: cards · list · titles. Contact: everything · email & phone."
+        },
+        {
+          "key": "eyebrow",
+          "label": "Eyebrow",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "key": "title",
+          "label": "Title",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "key": "body",
+          "label": "Text",
+          "type": "text",
+          "default": ""
+        },
+        {
+          "key": "image",
+          "label": "Image",
+          "type": "file",
+          "default": ""
+        },
+        {
+          "key": "image_alt",
+          "label": "Image description",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "key": "count",
+          "label": "Max items",
+          "type": "number",
+          "default": 0,
+          "description": "0 shows everything."
+        },
+        {
+          "key": "featured_only",
+          "label": "Featured items only",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "key": "background",
+          "label": "Background",
+          "type": "select",
+          "options": [
+            "default",
+            "surface",
+            "dark",
+            "primary"
+          ],
+          "default": "default"
+        },
+        {
+          "key": "link_label",
+          "label": "Link label",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "key": "link_url",
+          "label": "Link URL",
+          "type": "string",
+          "default": ""
+        }
+      ],
+      "default": [
+        {
+          "show": true,
+          "type": "contact",
+          "layout": "standard",
+          "eyebrow": "",
+          "title": "",
+          "body": "",
+          "image": "",
+          "image_alt": "",
+          "count": 0,
+          "featured_only": false,
+          "background": "default",
+          "link_label": "",
+          "link_url": ""
+        },
+        {
+          "show": true,
+          "type": "faq",
+          "layout": "standard",
+          "eyebrow": "Questions",
+          "title": "Good to know",
+          "body": "",
+          "image": "",
+          "image_alt": "",
+          "count": 0,
+          "featured_only": false,
+          "background": "default",
+          "link_label": "",
+          "link_url": ""
+        }
+      ]
+    },
+    {
+      "key": "faq",
+      "label": "Questions",
+      "type": "list",
+      "item_label": "Question",
+      "category": "Sections",
+      "fields": [
+        {
+          "key": "question",
+          "label": "Question",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "key": "answer",
+          "label": "Answer",
+          "type": "text",
+          "default": ""
+        }
+      ],
+      "default": []
+    },
+    {
+      "key": "points",
+      "label": "Points",
+      "type": "list",
+      "item_label": "Point",
+      "category": "Sections",
+      "description": "Values, principles or process steps for a Points section.",
+      "fields": [
+        {
+          "key": "title",
+          "label": "Title",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "key": "body",
+          "label": "Text",
+          "type": "text",
+          "default": ""
+        }
+      ],
+      "default": []
+    }
+  ]
+}

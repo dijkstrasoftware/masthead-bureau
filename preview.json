@@ -1,0 +1,101 @@
+{
+  "site": {
+    "name": "Field Office",
+    "title": "Field Office — Design & Strategy Studio",
+    "description": "An independent design and strategy studio in Rotterdam, working with organisations that intend to last.",
+    "homepage": "home"
+  },
+  "tokens": {
+    "email": "hello@fieldoffice.example",
+    "phone": "+31 10 000 00 00",
+    "address": "Pakhuiskade 12, Hall 4\n1234 AB Rotterdam\nThe Netherlands",
+    "hours": "Monday to Thursday, 9:00–17:30\nFridays by appointment",
+    "map_embed": "https://www.openstreetmap.org/export/embed.html?bbox=4.470%2C51.900%2C4.490%2C51.910&layer=mapnik&marker=51.905%2C4.480",
+    "social": [
+      {
+        "label": "Instagram",
+        "url": "https://instagram.com"
+      },
+      {
+        "label": "LinkedIn",
+        "url": "https://linkedin.com"
+      },
+      {
+        "label": "Are.na",
+        "url": "https://are.na"
+      }
+    ],
+    "stats": [
+      {
+        "value": "14",
+        "label": "Years practising as an independent studio"
+      },
+      {
+        "value": "120+",
+        "label": "Identities, websites and products delivered"
+      },
+      {
+        "value": "9",
+        "label": "Senior designers and strategists, no account managers"
+      },
+      {
+        "value": "78%",
+        "label": "Of our work comes from returning clients and referrals"
+      }
+    ],
+    "clients": [
+      {
+        "name": "Marlow Coffee",
+        "logo": "",
+        "url": ""
+      },
+      {
+        "name": "Tessel Health",
+        "logo": "",
+        "url": ""
+      },
+      {
+        "name": "Verhoef Architects",
+        "logo": "",
+        "url": ""
+      },
+      {
+        "name": "Northline Ferries",
+        "logo": "",
+        "url": ""
+      },
+      {
+        "name": "Ample Credit Union",
+        "logo": "",
+        "url": ""
+      },
+      {
+        "name": "Kade Museum",
+        "logo": "",
+        "url": ""
+      },
+      {
+        "name": "Oostwind Energy",
+        "logo": "",
+        "url": ""
+      },
+      {
+        "name": "Paper & Grain",
+        "logo": "",
+        "url": ""
+      }
+    ],
+    "footer_links": [
+      {
+        "label": "Privacy",
+        "url": "/privacy"
+      },
+      {
+        "label": "Colophon",
+        "url": "/privacy"
+      }
+    ],
+    "footer_note": "© 2026 Field Office B.V. · KvK 12345678",
+    "image_treatment": "monochrome until hover"
+  }
+}

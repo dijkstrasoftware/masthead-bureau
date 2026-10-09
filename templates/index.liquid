@@ -1,0 +1,46 @@
+{%- comment -%}
+  The default homepage (no page chosen as homepage) and the tag archive.
+  Services, work, team and testimonials are hidden unless a tag is being filtered.
+{%- endcomment -%}
+{%- assign tk = theme.tokens -%}
+{%- capture kind_keys -%}|{{ tk.services_tag | default: "Services" | strip | downcase | replace: " ", "-" }}|{{ tk.work_tag | default: "Work" | strip | downcase | replace: " ", "-" }}|{{ tk.team_tag | default: "Team" | strip | downcase | replace: " ", "-" }}|{{ tk.testimonials_tag | default: "Testimonials" | strip | downcase | replace: " ", "-" }}|{%- endcapture -%}
+<header class="hero hero-editorial hero-left">
+  <div class="container hero-inner">
+    <div class="hero-text">
+      {%- if current_tag %}<p class="eyebrow">Tagged</p>{% endif %}
+      <h1 class="hero-title">{% if search_query %}Results for “{{ search_query | escape }}”{% elsif current_tag %}{{ current_tag.name | default: current_tag | escape }}{% else %}{{ site.title | default: site.name | escape }}{% endif %}</h1>
+      {%- if site.description != "" and current_tag == nil and search_query == nil %}<p class="lede">{{ site.description | escape }}</p>{% endif %}
+    </div>
+  </div>
+</header>
+
+{%- capture items -%}
+  {%- for p in posts -%}
+    {%- unless current_tag or search_query -%}
+      {%- assign skip = false -%}
+      {%- assign pt = p.tags | map: "slug" -%}
+      {%- for t in pt -%}{%- capture key %}|{{ t }}|{% endcapture -%}{%- if kind_keys contains key %}{% assign skip = true %}{% endif -%}{%- endfor -%}
+      {%- if skip %}{% continue %}{% endif -%}
+    {%- endunless %}
+    <article class="entry reveal">
+      <a class="card-link" href="{{ p.url }}">
+        <p class="card-meta">{% if p.published_at %}<time datetime="{{ p.published_at | iso8601 }}">{{ p.published_at | strftime: "%-d %B %Y" }}</time>{% endif %}</p>
+        <div class="entry-text">
+          <h2 class="card-title">{{ p.title | escape }}</h2>
+          {%- if p.excerpt.size > 0 %}<p class="card-text">{{ p.excerpt | escape }}</p>{% endif %}
+        </div>
+        <span class="arrow" aria-hidden="true">→</span>
+      </a>
+    </article>
+  {%- endfor -%}
+{%- endcapture -%}
+{%- assign check = items | strip %}
+<section class="section">
+  <div class="container">
+    {%- if check != "" %}
+    <div class="entries entries-alternate">{{ items }}</div>
+    {%- else %}
+    <p class="empty">Nothing has been published here yet.</p>
+    {%- endif %}
+  </div>
+</section>

@@ -1,0 +1,567 @@
+{%- comment -%}
+  Bureau layout. Liquid has no partials, so everything shared lives here:
+  head + fonts, header, the page hero, the section engine (page_options.sections),
+  the closing call to action and the footer. Theme pages are deliberately empty.
+{%- endcomment -%}
+{%- assign tk = theme.tokens -%}
+{%- assign o = page.page_options -%}
+{%- capture nl %}
+{% endcapture -%}
+{%- assign tag_services = tk.services_tag | default: "Services" | strip | downcase | replace: " ", "-" -%}
+{%- assign tag_work = tk.work_tag | default: "Work" | strip | downcase | replace: " ", "-" -%}
+{%- assign tag_team = tk.team_tag | default: "Team" | strip | downcase | replace: " ", "-" -%}
+{%- assign tag_quotes = tk.testimonials_tag | default: "Testimonials" | strip | downcase | replace: " ", "-" -%}
+{%- capture kind_keys %}|{{ tag_services }}|{{ tag_work }}|{{ tag_team }}|{{ tag_quotes }}|{% endcapture -%}
+
+{%- assign is_home = false -%}
+{%- if page and site.homepage_slug != "" and page.slug == site.homepage_slug -%}{%- assign is_home = true -%}{%- endif -%}
+
+{%- comment -%} Which nav item is current. Posts light up the page their kind lives on. {%- endcomment -%}
+{%- assign current_url = page.url | default: post.url | default: "" -%}
+{%- if is_home -%}{%- assign current_url = "/" -%}{%- endif -%}
+{%- if post -%}
+  {%- assign post_tags = post.tags | map: "slug" | join: "|" | prepend: "|" | append: "|" -%}
+  {%- capture k %}|{{ tag_services }}|{% endcapture -%}{%- if post_tags contains k -%}{%- assign current_url = tk.services_url -%}{%- endif -%}
+  {%- capture k %}|{{ tag_work }}|{% endcapture -%}{%- if post_tags contains k -%}{%- assign current_url = tk.work_url -%}{%- endif -%}
+  {%- capture k %}|{{ tag_team }}|{% endcapture -%}{%- if post_tags contains k -%}{%- assign current_url = tk.team_url -%}{%- endif -%}
+{%- endif -%}
+
+{%- assign accent = o.accent_style | default: post.post_options.accent_style | default: "secondary" -%}
+{%- assign page_bg = o.background | default: "default" -%}
+{%- assign width = o.page_width | default: "standard" -%}
+
+{%- capture meta_description -%}
+  {%- if post -%}{{ post.post_options.seo_description | default: post.post_options.subtitle | default: post.excerpt | default: site.description }}
+  {%- elsif page -%}{{ o.intro | default: site.description }}
+  {%- else -%}{{ site.description }}{%- endif -%}
+{%- endcapture -%}
+{%- assign meta_description = meta_description | strip | strip_newlines | truncate: 300 -%}
+
+{%- comment -%} Navigation links are rendered once and reused by the bar, the mobile menu and the footer. {%- endcomment -%}
+{%- capture nav_links -%}
+  {%- if tk.nav.size > 0 -%}
+    {%- for item in tk.nav -%}{%- if item.label.size > 0 -%}
+      {%- assign u = item.url | default: "/" -%}
+      <li><a href="{{ u | escape }}"{% if u == current_url %} aria-current="page"{% endif %}>{{ item.label | escape }}</a></li>
+    {%- endif -%}{%- endfor -%}
+  {%- else -%}
+    {%- for p in pages -%}<li><a href="{{ p.url }}"{% if p.url == current_url %} aria-current="page"{% endif %}>{{ p.title | escape }}</a></li>{%- endfor -%}
+  {%- endif -%}
+{%- endcapture -%}
+{%- assign has_nav = nav_links | strip | size -%}
+{%- assign cta_url = tk.cta_url | default: "/contact" -%}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% if post %}{{ post.title | escape }} — {% elsif page and is_home == false %}{{ page.title | escape }} — {% endif %}{{ site.title | default: site.name | escape }}</title>
+    {% if meta_description != "" %}<meta name="description" content="{{ meta_description | escape }}" />{% endif %}
+    <meta property="og:title" content="{{ post.title | default: page.title | default: site.name | escape }}" />
+    {% if post and post.post_options.featured_image != "" %}<meta property="og:image" content="{{ post.post_options.featured_image }}" />{% elsif page and o.hero_image != "" and o.hero_image %}<meta property="og:image" content="{{ o.hero_image }}" />{% endif %}
+    {% if tk.favicon != "" %}<link rel="icon" href="{{ tk.favicon }}" />{% endif %}
+
+    {%- assign f_display = tk.display_font | default: "Instrument Serif" -%}
+    {%- assign f_heading = tk.heading_font | default: "Inter Tight" -%}
+    {%- assign f_body = tk.body_font | default: "Inter" -%}
+    {%- assign serif_fonts = "|Instrument Serif|Fraunces|Newsreader|Playfair Display|Cormorant Garamond|EB Garamond|Source Serif 4|DM Serif Display|" -%}
+    {%- assign single_weight = "|Instrument Serif|DM Serif Display|" -%}
+    {%- assign families = f_display | append: "|" | append: f_heading | append: "|" | append: f_body | split: "|" | uniq %}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    {%- for f in families -%}
+      {%- unless f contains "System" -%}
+        {%- capture key %}|{{ f }}|{% endcapture -%}
+        {%- if single_weight contains key -%}{%- assign spec = ":ital@0;1" -%}
+        {%- elsif serif_fonts contains key -%}{%- assign spec = ":ital,wght@0,400;0,500;0,600;0,700;1,400" -%}
+        {%- else -%}{%- assign spec = ":wght@400;500;600;700" -%}{%- endif %}
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={{ f | replace: ' ', '+' }}{{ spec }}&display=swap" />
+      {%- endunless -%}
+    {%- endfor %}
+    <style>
+      {{ theme.css }}
+      :root {
+        {%- assign roles = "display,heading,body" | split: "," -%}
+        {%- for r in roles -%}
+          {%- case r -%}{%- when "display" -%}{%- assign f = f_display -%}{%- when "heading" -%}{%- assign f = f_heading -%}{%- else -%}{%- assign f = f_body -%}{%- endcase -%}
+          {%- capture key %}|{{ f }}|{% endcapture %}
+        --font-{{ r }}: {% if f == "System serif" %}ui-serif, Georgia, "Times New Roman", serif{% elsif f == "System sans" %}system-ui, -apple-system, "Segoe UI", Roboto, sans-serif{% elsif serif_fonts contains key %}"{{ f }}", Georgia, "Times New Roman", serif{% else %}"{{ f }}", system-ui, -apple-system, "Segoe UI", sans-serif{% endif %};
+        {%- endfor %}
+        --ratio: {{ tk.image_ratio | default: "4:3" | replace: ":", " / " }};
+      }
+      {{ site.css_overrides }}
+    </style>
+  </head>
+  {%- capture body_class -%}
+    scale-{{ tk.type_scale | default: "balanced" }} btn-{{ tk.button_style | default: "solid" }} btncase-{{ tk.button_case | default: "normal" }}
+    img-{{ tk.image_treatment | default: "natural" | replace: " ", "-" }} eyebrow-{{ tk.eyebrow_style | default: "uppercase" | replace: " ", "-" }} accent-{{ accent }} width-{{ width }}
+    {% if tk.motion != false %} motion{% endif %}{% if tk.dividers != false %} dividers{% endif %}{% if tk.button_arrow != false %} arrows{% endif %}
+    {% if page_bg != "default" %} tone-{{ page_bg }}{% endif %}{% if is_home %} is-home{% endif %}
+  {%- endcapture %}
+  <body class="{{ body_class | strip_newlines | split: ' ' | join: ' ' }}">
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    {%- unless o.show_navigation == false %}
+    <header class="site-header{% if tk.header_sticky != false %} is-sticky{% endif %}">
+      <div class="container header-inner">
+        <a class="brand" href="/"{% if is_home %} aria-current="page"{% endif %}>
+          {%- if tk.logo != "" and tk.logo -%}
+            <img class="brand-logo" src="{{ tk.logo }}" alt="{{ site.name | escape }}" />
+          {%- else -%}
+            <span class="wordmark">{{ site.name | escape }}</span>
+          {%- endif -%}
+        </a>
+        {%- if has_nav > 0 %}
+        <nav class="nav" aria-label="Main">
+          <ul>{{ nav_links }}</ul>
+        </nav>
+        {%- endif %}
+        {%- if tk.header_cta != false and tk.cta_label != "" %}
+        <a class="btn btn-sm header-cta" href="{{ cta_url | escape }}">{{ tk.cta_label | escape }}</a>
+        {%- endif %}
+        {%- if has_nav > 0 or tk.cta_label != "" %}
+        <details class="menu">
+          <summary class="menu-toggle"><span class="menu-open">Menu</span><span class="menu-close">Close</span><span class="menu-icon" aria-hidden="true"></span></summary>
+          <div class="menu-panel">
+            <div class="container">
+              {%- if has_nav > 0 %}
+              <nav aria-label="Main"><ul class="menu-list">{{ nav_links }}</ul></nav>
+              {%- endif %}
+              <div class="menu-foot">
+                {%- if tk.cta_label != "" %}<a class="btn" href="{{ cta_url | escape }}">{{ tk.cta_label | escape }}<span class="arrow" aria-hidden="true">→</span></a>{% endif %}
+                {%- if tk.email != "" %}<a class="menu-email" href="mailto:{{ tk.email | escape }}">{{ tk.email | escape }}</a>{% endif %}
+              </div>
+            </div>
+          </div>
+        </details>
+        {%- endif %}
+      </div>
+    </header>
+    {%- endunless %}
+
+    <main id="main" tabindex="-1">
+      {%- if page -%}
+        {%- assign hs = o.hero_style | default: "editorial" -%}
+        {%- assign title_text = o.headline | default: page.title -%}
+        {%- assign headline = title_text | escape -%}
+        {%- if o.emphasis.size > 0 -%}
+          {%- assign em = o.emphasis | escape -%}
+          {%- capture em_html %}<em>{{ em }}</em>{% endcapture -%}
+          {%- assign headline = headline | replace: em, em_html -%}
+        {%- endif -%}
+        {%- assign has_img = false -%}
+        {%- if o.hero_image.size > 0 and hs != "minimal" -%}{%- assign has_img = true -%}{%- endif -%}
+        {%- if hs == "banner" and has_img == false -%}{%- assign hs = "editorial" -%}{%- endif -%}
+        {%- if o.show_title == false %}
+      <h1 class="visually-hidden">{{ title_text | escape }}</h1>
+        {%- else %}
+      <header class="hero hero-{{ hs }} hero-{{ o.hero_align | default: 'left' }}{% if has_img %} has-image{% endif %}">
+        {%- if hs == "banner" %}
+        <div class="hero-backdrop focus-{{ o.hero_image_position | default: 'center' }}"><img src="{{ o.hero_image }}" alt="{{ o.hero_image_alt | escape }}" /></div>
+        {%- endif %}
+        <div class="container hero-inner">
+          <div class="hero-text">
+            {%- if o.show_breadcrumbs != false and is_home == false %}
+            <nav class="breadcrumbs" aria-label="Breadcrumb">
+              <ol><li><a href="/">Home</a></li><li><span aria-current="page">{{ page.title | escape }}</span></li></ol>
+            </nav>
+            {%- endif %}
+            {%- if o.eyebrow.size > 0 %}<p class="eyebrow">{{ o.eyebrow | escape }}</p>{% endif %}
+            <h1 class="hero-title">{{ headline }}</h1>
+            {%- if o.intro.size > 0 %}<p class="lede">{{ o.intro | escape | newline_to_br }}</p>{% endif %}
+            {%- if o.primary_label.size > 0 or o.secondary_label.size > 0 %}
+            <div class="actions">
+              {%- if o.primary_label.size > 0 %}<a class="btn" href="{{ o.primary_url | default: cta_url | escape }}">{{ o.primary_label | escape }}<span class="arrow" aria-hidden="true">→</span></a>{% endif %}
+              {%- if o.secondary_label.size > 0 %}<a class="btn btn-quiet" href="{{ o.secondary_url | default: '#' | escape }}">{{ o.secondary_label | escape }}</a>{% endif %}
+            </div>
+            {%- endif %}
+          </div>
+          {%- if has_img and hs == "split" %}
+          <figure class="hero-media media focus-{{ o.hero_image_position | default: 'center' }}"><img src="{{ o.hero_image }}" alt="{{ o.hero_image_alt | escape }}" /></figure>
+          {%- endif %}
+        </div>
+        {%- if has_img and hs == "editorial" %}
+        <div class="container"><figure class="hero-media hero-wide media focus-{{ o.hero_image_position | default: 'center' }}"><img src="{{ o.hero_image }}" alt="{{ o.hero_image_alt | escape }}" /></figure></div>
+        {%- endif %}
+      </header>
+        {%- endif -%}
+      {%- endif %}
+
+      {{ content }}
+
+      {%- if page -%}
+      {%- for s in o.sections -%}{%- unless s.show == false -%}
+        {%- assign n = s.count | default: 0 | plus: 0 -%}
+        {%- assign lay = s.layout | default: "standard" -%}
+        {%- assign shown = 0 -%}
+        {%- assign sid = "s-" | append: forloop.index -%}
+        {%- capture inner -%}
+        {%- case s.type -%}
+
+        {%- when "services" -%}
+          {%- capture items -%}
+          {%- for pass in (1..2) -%}{%- if s.featured_only and pass == 2 %}{% break %}{% endif -%}
+          {%- for p in posts_by_tag[tag_services] -%}
+            {%- if p.post_options.featured or lay == "compact" %}{% assign f = 1 %}{% else %}{% assign f = 2 %}{% endif -%}
+            {%- if f != pass %}{% continue %}{% endif -%}
+            {%- if s.featured_only and p.post_options.featured != true %}{% continue %}{% endif -%}
+            {%- if n > 0 and shown >= n %}{% break %}{% endif -%}
+            {%- assign shown = shown | plus: 1 -%}
+            {%- assign num = shown | prepend: "0" | slice: -2, 2 -%}
+            {%- assign po = p.post_options -%}
+            {%- if lay == "alternate" %}
+            <article class="card reveal{% if po.featured %} is-featured{% endif %}">
+              <a class="card-link" href="{{ p.url }}">
+                {%- if po.featured_image.size > 0 %}<div class="media focus-{{ po.image_focus | default: 'center' }}"><img src="{{ po.featured_image }}" alt="" loading="lazy" /></div>{% endif %}
+                <p class="card-index">{% if po.icon.size > 0 %}<img class="icon" src="{{ po.icon }}" alt="" />{% else %}{{ num }}{% endif %}</p>
+                <h3 class="card-title">{{ p.title | escape }}</h3>
+                {%- if p.excerpt.size > 0 %}<p class="card-text">{{ p.excerpt | escape }}</p>{% endif %}
+                {%- if po.price.size > 0 %}<p class="card-meta">{{ po.price | escape }}</p>{% endif %}
+              </a>
+            </article>
+            {%- elsif lay == "compact" %}
+            <li><a href="{{ p.url }}"><span>{{ p.title | escape }}</span><span class="arrow" aria-hidden="true">→</span></a></li>
+            {%- else %}
+            <li class="row reveal{% if po.featured %} is-featured{% endif %}">
+              <a class="row-link" href="{{ p.url }}">
+                <span class="row-index">{% if po.icon.size > 0 %}<img class="icon" src="{{ po.icon }}" alt="" />{% else %}{{ num }}{% endif %}</span>
+                <span class="row-title"><h3>{{ p.title | escape }}</h3></span>
+                <span class="row-text">{{ p.excerpt | escape }}</span>
+                <span class="row-meta">{% if po.price.size > 0 %}<span>{{ po.price | escape }}</span>{% endif %}<span class="arrow" aria-hidden="true">→</span></span>
+              </a>
+            </li>
+            {%- endif -%}
+          {%- endfor -%}{%- endfor -%}
+          {%- endcapture -%}
+          {%- assign check = items | strip -%}
+          {%- if check != "" -%}
+            {%- if lay == "alternate" %}<div class="card-grid">{{ items }}</div>
+            {%- elsif lay == "compact" %}<ul class="index-list index-columns">{{ items }}</ul>
+            {%- else %}<ol class="rows">{{ items }}</ol>{% endif -%}
+          {%- endif -%}
+
+        {%- when "work" -%}
+          {%- capture items -%}
+          {%- for pass in (1..2) -%}{%- if s.featured_only and pass == 2 %}{% break %}{% endif -%}
+          {%- for p in posts_by_tag[tag_work] -%}
+            {%- if p.post_options.featured or lay == "compact" %}{% assign f = 1 %}{% else %}{% assign f = 2 %}{% endif -%}
+            {%- if f != pass %}{% continue %}{% endif -%}
+            {%- if s.featured_only and p.post_options.featured != true %}{% continue %}{% endif -%}
+            {%- if n > 0 and shown >= n %}{% break %}{% endif -%}
+            {%- assign shown = shown | plus: 1 -%}
+            {%- assign po = p.post_options -%}
+            {%- assign year = p.published_at | strftime: "%Y" -%}
+            {%- if lay == "compact" %}
+            <li class="reveal"><a href="{{ p.url }}"><span class="index-year">{{ year }}</span><span class="index-title">{{ p.title | escape }}</span><span class="index-client">{{ po.client | escape }}</span><span class="arrow" aria-hidden="true">→</span></a></li>
+            {%- else %}
+            <article class="work-card reveal{% if po.card_layout == 'large' %} is-large{% endif %}{% if po.card_layout == 'text only' %} is-text{% endif %}">
+              <a class="card-link" href="{{ p.url }}">
+                {%- unless po.card_layout == "text only" -%}
+                {%- if po.featured_image.size > 0 %}
+                <div class="media focus-{{ po.image_focus | default: 'center' }}"><img src="{{ po.featured_image }}" alt="" loading="lazy" /></div>
+                {%- else %}
+                <div class="media media-fallback" aria-hidden="true"><span>{{ po.client | default: p.title | escape }}</span></div>
+                {%- endif -%}
+                {%- endunless %}
+                <div class="work-card-text">
+                  <p class="card-meta">{% if po.client.size > 0 %}{{ po.client | escape }} · {% endif %}{{ year }}</p>
+                  <h3 class="card-title">{{ p.title | escape }}</h3>
+                  {%- if p.excerpt.size > 0 %}<p class="card-text">{{ p.excerpt | escape }}</p>{% endif %}
+                  {%- if lay == "alternate" %}<span class="link-arrow">View case study<span class="arrow" aria-hidden="true">→</span></span>{% endif %}
+                </div>
+              </a>
+            </article>
+            {%- endif -%}
+          {%- endfor -%}{%- endfor -%}
+          {%- endcapture -%}
+          {%- assign check = items | strip -%}
+          {%- if check != "" -%}
+            {%- if lay == "compact" %}<ul class="index-list work-index">{{ items }}</ul>
+            {%- else %}<div class="work-grid work-{{ lay }}">{{ items }}</div>{% endif -%}
+          {%- endif -%}
+
+        {%- when "testimonials" -%}
+          {%- if lay == "compact" %}{% assign n = 1 %}{% endif -%}
+          {%- capture items -%}
+          {%- for pass in (1..2) -%}{%- if s.featured_only and pass == 2 %}{% break %}{% endif -%}
+          {%- for p in posts_by_tag[tag_quotes] -%}
+            {%- if p.post_options.featured %}{% assign f = 1 %}{% else %}{% assign f = 2 %}{% endif -%}
+            {%- if f != pass %}{% continue %}{% endif -%}
+            {%- assign po = p.post_options -%}
+            {%- assign q = po.quote | default: p.excerpt -%}
+            {%- if q.size == 0 %}{% continue %}{% endif -%}
+            {%- if s.featured_only and po.featured != true %}{% continue %}{% endif -%}
+            {%- if n > 0 and shown >= n %}{% break %}{% endif -%}
+            {%- assign shown = shown | plus: 1 %}
+            <figure class="quote reveal">
+              <blockquote><p>{{ q | escape | newline_to_br }}</p></blockquote>
+              <figcaption class="person">
+                {%- if po.featured_image.size > 0 %}<img class="avatar" src="{{ po.featured_image }}" alt="" loading="lazy" />{% endif %}
+                <span class="person-text"><span class="person-name">{{ p.title | escape }}</span>{% if po.role.size > 0 or po.client.size > 0 %}<span class="person-role">{{ po.role | escape }}{% if po.role.size > 0 and po.client.size > 0 %}, {% endif %}{{ po.client | escape }}</span>{% endif %}</span>
+                {%- if po.logo.size > 0 %}<img class="person-logo" src="{{ po.logo }}" alt="{{ po.client | escape }}" loading="lazy" />{% endif %}
+              </figcaption>
+            </figure>
+          {%- endfor -%}{%- endfor -%}
+          {%- endcapture -%}
+          {%- assign check = items | strip -%}
+          {%- if check != "" %}<div class="quotes quotes-{{ lay }}">{{ items }}</div>{% endif -%}
+
+        {%- when "team" -%}
+          {%- capture items -%}
+          {%- for pass in (1..2) -%}{%- if s.featured_only and pass == 2 %}{% break %}{% endif -%}
+          {%- for p in posts_by_tag[tag_team] -%}
+            {%- if p.post_options.featured or lay == "compact" %}{% assign f = 1 %}{% else %}{% assign f = 2 %}{% endif -%}
+            {%- if f != pass %}{% continue %}{% endif -%}
+            {%- if s.featured_only and p.post_options.featured != true %}{% continue %}{% endif -%}
+            {%- if n > 0 and shown >= n %}{% break %}{% endif -%}
+            {%- assign shown = shown | plus: 1 -%}
+            {%- assign po = p.post_options -%}
+            {%- if lay == "compact" %}
+            <li><a href="{{ p.url }}"><span>{{ p.title | escape }}</span><span class="index-client">{{ po.role | escape }}</span></a></li>
+            {%- else %}
+            <article class="person-card reveal">
+              <a class="card-link" href="{{ p.url }}">
+                {%- if po.featured_image.size > 0 %}
+                <div class="media portrait focus-{{ po.image_focus | default: 'top' }}"><img src="{{ po.featured_image }}" alt="" loading="lazy" /></div>
+                {%- else %}
+                <div class="media portrait media-fallback" aria-hidden="true"><span>{{ p.title | slice: 0 }}</span></div>
+                {%- endif %}
+                <div class="person-card-text">
+                  <h3 class="card-title">{{ p.title | escape }}</h3>
+                  {%- if po.role.size > 0 %}<p class="card-meta">{{ po.role | escape }}</p>{% endif %}
+                  {%- if lay == "alternate" and p.excerpt.size > 0 %}<p class="card-text">{{ p.excerpt | escape }}</p>{% endif %}
+                </div>
+              </a>
+            </article>
+            {%- endif -%}
+          {%- endfor -%}{%- endfor -%}
+          {%- endcapture -%}
+          {%- assign check = items | strip -%}
+          {%- if check != "" -%}
+            {%- if lay == "compact" %}<ul class="index-list index-columns">{{ items }}</ul>
+            {%- else %}<div class="team-grid team-{{ lay }}">{{ items }}</div>{% endif -%}
+          {%- endif -%}
+
+        {%- when "clients" -%}
+          {%- capture items -%}
+          {%- for c in tk.clients -%}{%- if c.name.size > 0 or c.logo.size > 0 -%}
+            {%- if n > 0 and shown >= n %}{% break %}{% endif -%}
+            {%- assign shown = shown | plus: 1 -%}
+            {%- capture mark %}{% if c.logo.size > 0 and lay == "standard" %}<img src="{{ c.logo }}" alt="{{ c.name | escape }}" loading="lazy" />{% else %}{{ c.name | escape }}{% endif %}{% endcapture %}
+            <li class="client">{% if c.url.size > 0 %}<a href="{{ c.url | escape }}">{{ mark }}</a>{% else %}<span>{{ mark }}</span>{% endif %}</li>
+          {%- endif -%}{%- endfor -%}
+          {%- endcapture -%}
+          {%- assign check = items | strip -%}
+          {%- if check != "" %}<ul class="clients clients-{{ lay }} reveal">{{ items }}</ul>{% endif -%}
+
+        {%- when "stats" -%}
+          {%- capture items -%}
+          {%- for st in tk.stats -%}{%- if st.value.size > 0 -%}
+            {%- if n > 0 and shown >= n %}{% break %}{% endif -%}
+            {%- assign shown = shown | plus: 1 %}
+            <div class="stat reveal"><dt>{{ st.label | escape }}</dt><dd>{{ st.value | escape }}</dd></div>
+          {%- endif -%}{%- endfor -%}
+          {%- endcapture -%}
+          {%- assign check = items | strip -%}
+          {%- if check != "" %}<dl class="stats stats-{{ lay }}">{{ items }}</dl>{% endif -%}
+
+        {%- when "points" -%}
+          {%- capture items -%}
+          {%- for pt in o.points -%}{%- if pt.title.size > 0 or pt.body.size > 0 -%}
+            {%- if n > 0 and shown >= n %}{% break %}{% endif -%}
+            {%- assign shown = shown | plus: 1 -%}
+            {%- assign num = shown | prepend: "0" | slice: -2, 2 %}
+            <li class="point reveal">
+              <span class="point-index">{{ num }}</span>
+              {%- if pt.title.size > 0 %}<h3 class="point-title">{{ pt.title | escape }}</h3>{% endif %}
+              {%- if pt.body.size > 0 %}<p class="point-text">{{ pt.body | escape | newline_to_br }}</p>{% endif %}
+            </li>
+          {%- endif -%}{%- endfor -%}
+          {%- endcapture -%}
+          {%- assign check = items | strip -%}
+          {%- if check != "" %}<ol class="points points-{{ lay }}">{{ items }}</ol>{% endif -%}
+
+        {%- when "faq" -%}
+          {%- capture items -%}
+          {%- for f in o.faq -%}{%- if f.question.size > 0 -%}
+            {%- if n > 0 and shown >= n %}{% break %}{% endif -%}
+            {%- assign shown = shown | plus: 1 %}
+            <details class="faq-item">
+              <summary><span>{{ f.question | escape }}</span><span class="faq-icon" aria-hidden="true"></span></summary>
+              <div class="faq-answer"><p>{{ f.answer | escape | newline_to_br }}</p></div>
+            </details>
+          {%- endif -%}{%- endfor -%}
+          {%- endcapture -%}
+          {%- assign check = items | strip -%}
+          {%- if check != "" %}<div class="faq">{{ items }}</div>{% endif -%}
+
+        {%- when "contact" -%}
+          {%- assign map_head = tk.map_embed | default: "" | slice: 0, 8 -%}
+          {%- capture items -%}
+            {%- if tk.email != "" %}<div class="contact-item contact-lead"><p class="label">Email</p><a class="contact-big" href="mailto:{{ tk.email | escape }}">{{ tk.email | escape }}</a></div>{% endif -%}
+            {%- if tk.phone != "" %}<div class="contact-item"><p class="label">Phone</p><a href="tel:{{ tk.phone | remove: ' ' | remove: '(' | remove: ')' | remove: '-' | escape }}">{{ tk.phone | escape }}</a></div>{% endif -%}
+            {%- unless lay == "compact" -%}
+            {%- if tk.address != "" %}<div class="contact-item"><p class="label">Studio</p><address>{{ tk.address | escape | newline_to_br }}</address></div>{% endif -%}
+            {%- if tk.hours != "" %}<div class="contact-item"><p class="label">Hours</p><p>{{ tk.hours | escape | newline_to_br }}</p></div>{% endif -%}
+            {%- if tk.social.size > 0 %}<div class="contact-item"><p class="label">Elsewhere</p><ul class="link-list">{% for l in tk.social %}{% if l.label.size > 0 %}<li><a href="{{ l.url | escape }}" rel="me noopener">{{ l.label | escape }}</a></li>{% endif %}{% endfor %}</ul></div>{% endif -%}
+            {%- endunless -%}
+          {%- endcapture -%}
+          {%- assign check = items | strip -%}
+          {%- if check != "" %}<div class="contact-grid reveal">{{ items }}</div>{% endif -%}
+          {%- if map_head == "https://" and lay != "compact" %}<div class="map reveal"><iframe src="{{ tk.map_embed | escape }}" title="Map showing {{ site.name | escape }}" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>{% endif -%}
+
+        {%- when "journal" -%}
+          {%- capture items -%}
+          {%- for p in posts -%}
+            {%- assign pt = p.tags | map: "slug" -%}
+            {%- assign skip = false -%}
+            {%- for t in pt -%}{%- capture key %}|{{ t }}|{% endcapture -%}{%- if kind_keys contains key %}{% assign skip = true %}{% endif -%}{%- endfor -%}
+            {%- if skip %}{% continue %}{% endif -%}
+            {%- if s.featured_only and p.post_options.featured != true %}{% continue %}{% endif -%}
+            {%- if n > 0 and shown >= n %}{% break %}{% endif -%}
+            {%- assign shown = shown | plus: 1 -%}
+            {%- assign po = p.post_options %}
+            <article class="entry reveal">
+              <a class="card-link" href="{{ p.url }}">
+                {%- if lay == "standard" and po.featured_image.size > 0 %}<div class="media focus-{{ po.image_focus | default: 'center' }}"><img src="{{ po.featured_image }}" alt="" loading="lazy" /></div>{% endif %}
+                <p class="card-meta"><time datetime="{{ p.published_at | iso8601 }}">{{ p.published_at | strftime: "%-d %B %Y" }}</time></p>
+                <div class="entry-text">
+                  <h3 class="card-title">{{ p.title | escape }}</h3>
+                  {%- if p.excerpt.size > 0 %}<p class="card-text">{{ p.excerpt | escape }}</p>{% endif %}
+                </div>
+                {%- unless lay == "standard" %}<span class="arrow" aria-hidden="true">→</span>{% endunless %}
+              </a>
+            </article>
+          {%- endfor -%}
+          {%- endcapture -%}
+          {%- assign check = items | strip -%}
+          {%- if check != "" %}<div class="entries entries-{{ lay }}">{{ items }}</div>{% endif -%}
+
+        {%- when "text" -%}
+          {%- if s.title.size > 0 or s.body.size > 0 or s.image.size > 0 %}
+          <div class="text-block text-{{ lay }}{% if s.image.size > 0 and lay != 'compact' %} has-image{% endif %}">
+            <div class="text-copy reveal">
+              {%- if s.eyebrow.size > 0 %}<p class="eyebrow">{{ s.eyebrow | escape }}</p>{% endif %}
+              {%- if s.title.size > 0 %}<h2 class="section-title" id="{{ sid }}">{{ s.title | escape }}</h2>{% endif %}
+              {%- if s.body.size > 0 -%}
+                <div class="{% if lay == 'compact' %}statement{% else %}text-body{% endif %}">
+                {%- assign paras = s.body | split: nl -%}
+                {%- for para in paras %}{% assign para_s = para | strip %}{% if para_s != "" %}<p>{{ para_s | escape }}</p>{% endif %}{% endfor -%}
+                </div>
+              {%- endif %}
+              {%- if s.link_label.size > 0 %}<a class="link-arrow" href="{{ s.link_url | default: '#' | escape }}">{{ s.link_label | escape }}<span class="arrow" aria-hidden="true">→</span></a>{% endif %}
+            </div>
+            {%- if s.image.size > 0 %}<figure class="media text-media reveal"><img src="{{ s.image }}" alt="{{ s.image_alt | escape }}" loading="lazy" /></figure>{% endif %}
+          </div>
+          {%- endif -%}
+
+        {%- when "cta" -%}
+          {%- assign c_title = s.title | default: tk.cta_heading -%}
+          {%- if c_title.size > 0 %}
+          <div class="cta-block reveal">
+            {%- if s.eyebrow.size > 0 %}<p class="eyebrow">{{ s.eyebrow | escape }}</p>{% endif %}
+            <h2 class="cta-title" id="{{ sid }}">{{ c_title | escape }}</h2>
+            {%- assign c_body = s.body | default: tk.cta_body -%}
+            {%- if c_body.size > 0 %}<p class="lede">{{ c_body | escape | newline_to_br }}</p>{% endif %}
+            {%- assign c_label = s.link_label | default: tk.cta_label -%}
+            {%- if c_label.size > 0 %}<div class="actions"><a class="btn" href="{{ s.link_url | default: cta_url | escape }}">{{ c_label | escape }}<span class="arrow" aria-hidden="true">→</span></a></div>{% endif %}
+          </div>
+          {%- endif -%}
+        {%- endcase -%}
+        {%- endcapture -%}
+
+        {%- assign check = inner | strip -%}
+        {%- if check != "" %}
+      <section class="section section-{{ s.type }} layout-{{ lay }}{% if s.background != 'default' and s.background %} band tone-{{ s.background }}{% endif %}"{% if s.title.size > 0 %} aria-labelledby="{{ sid }}"{% endif %}>
+        <div class="container section-inner">
+          {%- unless s.type == "text" or s.type == "cta" -%}
+          {%- if s.eyebrow.size > 0 or s.title.size > 0 or s.body.size > 0 or s.link_label.size > 0 %}
+          <header class="section-head reveal">
+            <div class="section-head-main">
+              {%- if s.eyebrow.size > 0 %}<p class="eyebrow">{{ s.eyebrow | escape }}</p>{% endif %}
+              {%- if s.title.size > 0 %}<h2 class="section-title" id="{{ sid }}">{{ s.title | escape }}</h2>{% endif %}
+            </div>
+            {%- if s.body.size > 0 or s.link_label.size > 0 %}
+            <div class="section-head-aside">
+              {%- if s.body.size > 0 %}<p>{{ s.body | escape | newline_to_br }}</p>{% endif %}
+              {%- if s.link_label.size > 0 %}<a class="link-arrow" href="{{ s.link_url | default: '#' | escape }}">{{ s.link_label | escape }}<span class="arrow" aria-hidden="true">→</span></a>{% endif %}
+            </div>
+            {%- endif %}
+          </header>
+          {%- endif -%}
+          {%- endunless %}
+          {{ inner }}
+        </div>
+      </section>
+        {%- endif -%}
+      {%- endunless -%}{%- endfor -%}
+      {%- endif %}
+
+      {%- assign show_band = true -%}
+      {%- if page and o.show_cta == false %}{% assign show_band = false %}{% endif -%}
+      {%- if tk.cta_heading == "" %}{% assign show_band = false %}{% endif -%}
+      {%- if show_band %}
+      <section class="section cta-band{% if tk.cta_tone != 'default' %} band tone-{{ tk.cta_tone }}{% endif %}" aria-labelledby="cta-band-title">
+        <div class="container">
+          <div class="cta-block reveal">
+            {%- if tk.cta_eyebrow != "" %}<p class="eyebrow">{{ tk.cta_eyebrow | escape }}</p>{% endif %}
+            <h2 class="cta-title" id="cta-band-title">{{ tk.cta_heading | escape }}</h2>
+            {%- if tk.cta_body != "" %}<p class="lede">{{ tk.cta_body | escape | newline_to_br }}</p>{% endif %}
+            {%- if tk.cta_label != "" or tk.email != "" %}
+            <div class="actions">
+              {%- if tk.cta_label != "" %}<a class="btn" href="{{ cta_url | escape }}">{{ tk.cta_label | escape }}<span class="arrow" aria-hidden="true">→</span></a>{% endif %}
+              {%- if tk.email != "" %}<a class="btn btn-quiet" href="mailto:{{ tk.email | escape }}">{{ tk.email | escape }}</a>{% endif %}
+            </div>
+            {%- endif %}
+          </div>
+        </div>
+      </section>
+      {%- endif %}
+    </main>
+
+    {%- unless o.show_footer == false %}
+    {%- assign footer_tone = tk.footer_tone | default: "dark" %}
+    <footer class="site-footer{% if footer_tone != 'default' %} tone-{{ footer_tone }}{% endif %}">
+      <div class="container">
+        <div class="footer-top">
+          <div class="footer-brand">
+            <a class="wordmark" href="/">{{ site.name | escape }}</a>
+            {%- assign f_text = tk.footer_text | default: site.description -%}
+            {%- if f_text.size > 0 %}<p>{{ f_text | escape | newline_to_br }}</p>{% endif %}
+          </div>
+          <div class="footer-cols">
+            {%- if has_nav > 0 %}
+            <nav class="footer-col" aria-label="Footer">
+              <h2 class="label">Navigate</h2>
+              <ul class="link-list">{{ nav_links }}</ul>
+            </nav>
+            {%- endif %}
+            {%- if tk.email != "" or tk.phone != "" or tk.address != "" %}
+            <div class="footer-col">
+              <h2 class="label">Contact</h2>
+              <ul class="link-list">
+                {%- if tk.email != "" %}<li><a href="mailto:{{ tk.email | escape }}">{{ tk.email | escape }}</a></li>{% endif %}
+                {%- if tk.phone != "" %}<li><a href="tel:{{ tk.phone | remove: ' ' | remove: '(' | remove: ')' | remove: '-' | escape }}">{{ tk.phone | escape }}</a></li>{% endif %}
+                {%- if tk.address != "" %}<li><address>{{ tk.address | escape | newline_to_br }}</address></li>{% endif %}
+              </ul>
+            </div>
+            {%- endif %}
+            {%- if tk.social.size > 0 %}
+            <div class="footer-col">
+              <h2 class="label">Follow</h2>
+              <ul class="link-list">{% for l in tk.social %}{% if l.label.size > 0 %}<li><a href="{{ l.url | escape }}" rel="me noopener">{{ l.label | escape }}</a></li>{% endif %}{% endfor %}</ul>
+            </div>
+            {%- endif %}
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>{% if tk.footer_note != "" %}{{ tk.footer_note | escape }}{% else %}© {{ "now" | date: "%Y" }} {{ site.name | escape }}{% endif %}</p>
+          {%- if tk.footer_links.size > 0 %}
+          <ul class="inline-list">{% for l in tk.footer_links %}{% if l.label.size > 0 %}<li><a href="{{ l.url | escape }}">{{ l.label | escape }}</a></li>{% endif %}{% endfor %}</ul>
+          {%- endif %}
+        </div>
+      </div>
+    </footer>
+    {%- endunless %}
+  </body>
+</html>

@@ -1,0 +1,13 @@
+<header class="hero hero-editorial hero-left">
+  <div class="container hero-inner">
+    <div class="hero-text">
+      <p class="eyebrow">Error 404</p>
+      <h1 class="hero-title">This page could not be <em>found</em>.</h1>
+      <p class="lede">It may have moved, or the link may be out of date.</p>
+      <div class="actions">
+        <a class="btn" href="/">Back to {{ site.name | escape }}<span class="arrow" aria-hidden="true">→</span></a>
+        {%- if theme.tokens.email != "" %}<a class="btn btn-quiet" href="mailto:{{ theme.tokens.email | escape }}">{{ theme.tokens.email | escape }}</a>{% endif %}
+      </div>
+    </div>
+  </div>
+</header>

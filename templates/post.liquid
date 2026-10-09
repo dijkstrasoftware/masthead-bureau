@@ -1,0 +1,290 @@
+{%- comment -%}
+  One template, five kinds, picked by tag (tags are set under Settings → Content structure):
+  service, case study, team member, testimonial, and anything else = journal article.
+{%- endcomment -%}
+{%- assign tk = theme.tokens -%}
+{%- assign po = post.post_options -%}
+{%- capture nl %}
+{% endcapture -%}
+{%- assign tag_services = tk.services_tag | default: "Services" | strip | downcase | replace: " ", "-" -%}
+{%- assign tag_work = tk.work_tag | default: "Work" | strip | downcase | replace: " ", "-" -%}
+{%- assign tag_team = tk.team_tag | default: "Team" | strip | downcase | replace: " ", "-" -%}
+{%- assign tag_quotes = tk.testimonials_tag | default: "Testimonials" | strip | downcase | replace: " ", "-" -%}
+{%- assign post_tags = post.tags | map: "slug" | join: "|" | prepend: "|" | append: "|" -%}
+
+{%- assign kind = "article" -%}
+{%- assign parent_label = "Journal" -%}
+{%- assign parent_url = tk.journal_url -%}
+{%- capture k %}|{{ tag_quotes }}|{% endcapture -%}{%- if post_tags contains k -%}{%- assign kind = "testimonial" -%}{%- assign parent_label = "" -%}{%- endif -%}
+{%- capture k %}|{{ tag_team }}|{% endcapture -%}{%- if post_tags contains k -%}{%- assign kind = "team" -%}{%- assign parent_label = tk.team_tag -%}{%- assign parent_url = tk.team_url -%}{%- endif -%}
+{%- capture k %}|{{ tag_work }}|{% endcapture -%}{%- if post_tags contains k -%}{%- assign kind = "case" -%}{%- assign parent_label = tk.work_tag -%}{%- assign parent_url = tk.work_url -%}{%- endif -%}
+{%- capture k %}|{{ tag_services }}|{% endcapture -%}{%- if post_tags contains k -%}{%- assign kind = "service" -%}{%- assign parent_label = tk.services_tag -%}{%- assign parent_url = tk.services_url -%}{%- endif -%}
+
+{%- assign has_img = false -%}
+{%- if po.featured_image.size > 0 and po.show_image != false -%}{%- assign has_img = true -%}{%- endif -%}
+{%- assign position = po.image_position | default: "below title" -%}
+{%- assign focus = po.image_focus | default: "center" -%}
+{%- assign lede = po.subtitle | default: post.excerpt -%}
+{%- assign cta_label = po.cta_label | default: tk.cta_label -%}
+{%- assign cta_url = po.cta_url | default: tk.cta_url | default: "/contact" -%}
+{%- assign body_check = body_html | strip -%}
+
+{%- capture breadcrumbs -%}
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="/">Home</a></li>
+    {%- if parent_label.size > 0 and parent_url.size > 0 %}<li><a href="{{ parent_url | escape }}">{{ parent_label | escape }}</a></li>{% endif %}
+    <li><span aria-current="page">{{ post.title | escape }}</span></li>
+  </ol>
+</nav>
+{%- endcapture -%}
+
+{%- capture figure -%}
+<figure class="post-media media focus-{{ focus }}"><img src="{{ po.featured_image }}" alt="{{ po.image_alt | escape }}" /></figure>
+{%- endcapture -%}
+
+{%- comment -%} Testimonials whose "Shown on" lists this post's slug. {%- endcomment -%}
+{%- capture related_quotes -%}
+  {%- unless kind == "testimonial" -%}
+  {%- capture key %},{{ post.slug }},{% endcapture -%}
+  {%- for t in posts_by_tag[tag_quotes] -%}
+    {%- assign rel = t.post_options.related | default: "" | remove: " " | prepend: "," | append: "," -%}
+    {%- assign q = t.post_options.quote | default: t.excerpt -%}
+    {%- if rel contains key and q.size > 0 %}
+    <figure class="quote reveal">
+      <blockquote><p>{{ q | escape | newline_to_br }}</p></blockquote>
+      <figcaption class="person">
+        {%- if t.post_options.featured_image.size > 0 %}<img class="avatar" src="{{ t.post_options.featured_image }}" alt="" loading="lazy" />{% endif %}
+        <span class="person-text"><span class="person-name">{{ t.title | escape }}</span>{% if t.post_options.role.size > 0 or t.post_options.client.size > 0 %}<span class="person-role">{{ t.post_options.role | escape }}{% if t.post_options.role.size > 0 and t.post_options.client.size > 0 %}, {% endif %}{{ t.post_options.client | escape }}</span>{% endif %}</span>
+        {%- if t.post_options.logo.size > 0 %}<img class="person-logo" src="{{ t.post_options.logo }}" alt="{{ t.post_options.client | escape }}" loading="lazy" />{% endif %}
+      </figcaption>
+    </figure>
+    {%- endif -%}
+  {%- endfor -%}
+  {%- endunless -%}
+{%- endcapture -%}
+{%- assign quotes_check = related_quotes | strip -%}
+
+{%- if kind == "team" -%}
+{%- comment -%} ───────────── Team member ───────────── {%- endcomment -%}
+<article class="member">
+  <div class="container member-inner">
+    <div class="member-media">
+      {%- if has_img %}
+      <figure class="media portrait focus-{{ po.image_focus | default: 'top' }}"><img src="{{ po.featured_image }}" alt="{{ po.image_alt | default: post.title | escape }}" /></figure>
+      {%- else %}
+      <div class="media portrait media-fallback" aria-hidden="true"><span>{{ post.title | slice: 0 }}</span></div>
+      {%- endif %}
+    </div>
+    <div class="member-text">
+      {{ breadcrumbs }}
+      {%- if po.eyebrow.size > 0 %}<p class="eyebrow">{{ po.eyebrow | escape }}</p>{% endif %}
+      <h1 class="post-title{% if po.show_title == false %} visually-hidden{% endif %}">{{ post.title | escape }}</h1>
+      {%- if po.role.size > 0 and po.show_meta != false %}<p class="lede">{{ po.role | escape }}</p>{% endif %}
+      {%- if body_check != "" %}<div class="prose">{{ body_html }}</div>{% elsif post.excerpt.size > 0 %}<div class="prose"><p>{{ post.excerpt | escape }}</p></div>{% endif %}
+      {%- if po.socials.size > 0 %}
+      <ul class="inline-list socials">{% for l in po.socials %}{% if l.label.size > 0 %}<li><a href="{{ l.url | escape }}" rel="noopener">{{ l.label | escape }}</a></li>{% endif %}{% endfor %}</ul>
+      {%- endif %}
+      {%- if po.cta_label.size > 0 %}<div class="actions"><a class="btn" href="{{ cta_url | escape }}">{{ po.cta_label | escape }}<span class="arrow" aria-hidden="true">→</span></a></div>{% endif %}
+    </div>
+  </div>
+</article>
+
+{%- elsif kind == "testimonial" -%}
+{%- comment -%} ───────────── Testimonial ───────────── {%- endcomment -%}
+{%- assign q = po.quote | default: post.excerpt -%}
+<article class="testimonial-page">
+  <div class="container">
+    {{ breadcrumbs }}
+    <h1 class="visually-hidden">{{ post.title | escape }}</h1>
+    <figure class="quote quote-page">
+      {%- if q.size > 0 %}<blockquote><p>{{ q | escape | newline_to_br }}</p></blockquote>{% endif %}
+      <figcaption class="person">
+        {%- if has_img %}<img class="avatar" src="{{ po.featured_image }}" alt="" />{% endif %}
+        <span class="person-text"><span class="person-name">{{ post.title | escape }}</span>{% if po.role.size > 0 or po.client.size > 0 %}<span class="person-role">{{ po.role | escape }}{% if po.role.size > 0 and po.client.size > 0 %}, {% endif %}{{ po.client | escape }}</span>{% endif %}</span>
+        {%- if po.logo.size > 0 %}<img class="person-logo" src="{{ po.logo }}" alt="{{ po.client | escape }}" />{% endif %}
+      </figcaption>
+    </figure>
+    {%- if body_check != "" %}<div class="prose">{{ body_html }}</div>{% endif %}
+  </div>
+</article>
+
+{%- else -%}
+{%- comment -%} ───────────── Article, service, case study: shared editorial header ───────────── {%- endcomment -%}
+{%- assign variant = po.variant | default: "default" -%}
+<article class="entry-page kind-{{ kind }}">
+  <header class="post-hero image-{{ position | replace: ' ', '-' }}{% if has_img %} has-image{% endif %}{% if variant != 'default' %} band tone-{{ variant }}{% endif %}">
+    {%- if has_img and position == "above title" %}<div class="container">{{ figure }}</div>{% endif %}
+    <div class="container post-hero-inner">
+      <div class="post-hero-text">
+        {{ breadcrumbs }}
+        {%- assign eyebrow = po.eyebrow | default: parent_label -%}
+        {%- if kind == "case" and po.eyebrow.size == 0 and po.client.size > 0 %}{% assign eyebrow = po.client %}{% endif -%}
+        {%- if eyebrow.size > 0 %}<p class="eyebrow">{{ eyebrow | escape }}</p>{% endif %}
+        <h1 class="post-title{% if po.show_title == false %} visually-hidden{% endif %}">{{ post.title | escape }}</h1>
+        {%- if lede.size > 0 %}<p class="lede">{{ lede | escape | newline_to_br }}</p>{% endif %}
+
+        {%- if po.show_meta != false -%}
+        {%- capture meta -%}
+          {%- if kind == "service" -%}
+            {%- if po.price.size > 0 %}<div><dt>Investment</dt><dd>{{ po.price | escape }}</dd></div>{% endif -%}
+            {%- if po.duration.size > 0 %}<div><dt>Duration</dt><dd>{{ po.duration | escape }}</dd></div>{% endif -%}
+          {%- elsif kind == "case" -%}
+            {%- if po.client.size > 0 %}<div><dt>Client</dt><dd>{{ po.client | escape }}</dd></div>{% endif -%}
+            {%- if post.published_at %}<div><dt>Year</dt><dd>{{ post.published_at | strftime: "%Y" }}</dd></div>{% endif -%}
+            {%- if po.services_used.size > 0 -%}
+              {%- assign used = po.services_used | split: nl -%}
+              <div><dt>Services</dt><dd>{% for u in used %}{% assign u_s = u | strip %}{% if u_s != "" %}<span class="meta-item">{{ u_s | escape }}</span>{% endif %}{% endfor %}</dd></div>
+            {%- endif -%}
+          {%- elsif post.published_at -%}
+            <div><dt>Published</dt><dd><time datetime="{{ post.published_at | iso8601 }}">{{ post.published_at | strftime: "%-d %B %Y" }}</time></dd></div>
+          {%- endif -%}
+        {%- endcapture -%}
+        {%- assign meta_check = meta | strip -%}
+        {%- if meta_check != "" %}<dl class="meta-list">{{ meta }}</dl>{% endif -%}
+        {%- endif -%}
+
+        {%- if kind == "service" or po.cta_label.size > 0 or po.external_url.size > 0 %}
+        <div class="actions">
+          {%- if kind == "service" or po.cta_label.size > 0 %}{% if cta_label.size > 0 %}<a class="btn" href="{{ cta_url | escape }}">{{ cta_label | escape }}<span class="arrow" aria-hidden="true">→</span></a>{% endif %}{% endif %}
+          {%- if po.external_url.size > 0 %}<a class="btn btn-quiet" href="{{ po.external_url | escape }}" rel="noopener">Visit{% if po.client.size > 0 %} {{ po.client | escape }}{% endif %}<span class="arrow" aria-hidden="true">↗</span></a>{% endif %}
+        </div>
+        {%- endif %}
+      </div>
+      {%- if has_img and position == "beside title" %}{{ figure }}{% endif %}
+    </div>
+    {%- if has_img and position == "below title" %}<div class="container">{{ figure | replace: 'class="post-media', 'class="post-media media-wide' }}</div>{% endif %}
+  </header>
+  {%- if has_img and position == "full bleed" %}{{ figure | replace: 'class="post-media', 'class="post-media media-bleed' }}{% endif %}
+
+  {%- if kind == "service" -%}
+  {%- comment -%} Service: prose beside a sticky "what's included" card. {%- endcomment -%}
+  {%- assign includes = po.includes | default: "" | split: nl %}
+  <div class="section">
+    <div class="container split-body">
+      <div class="prose{% if po.full_width %} prose-wide{% endif %}">{% if body_check != "" %}{{ body_html }}{% else %}<p>{{ post.excerpt | escape }}</p>{% endif %}</div>
+      <aside class="aside-card" aria-labelledby="included-title">
+        <h2 class="label" id="included-title">What’s included</h2>
+        {%- if includes.size > 0 %}
+        <ul class="check-list">{% for i in includes %}{% assign i_s = i | strip %}{% if i_s != "" %}<li>{{ i_s | escape }}</li>{% endif %}{% endfor %}</ul>
+        {%- endif %}
+        {%- if po.price.size > 0 %}<p class="aside-price">{{ po.price | escape }}</p>{% endif %}
+        {%- if cta_label.size > 0 %}<a class="btn btn-block" href="{{ cta_url | escape }}">{{ cta_label | escape }}<span class="arrow" aria-hidden="true">→</span></a>{% endif %}
+      </aside>
+    </div>
+  </div>
+
+  {%- capture related_work -%}
+    {%- for p in posts_by_tag[tag_work] -%}
+      {%- assign used = p.post_options.services_used | default: "" -%}
+      {%- if used contains post.title -%}
+      <article class="work-card reveal">
+        <a class="card-link" href="{{ p.url }}">
+          {%- if p.post_options.featured_image.size > 0 %}<div class="media focus-{{ p.post_options.image_focus | default: 'center' }}"><img src="{{ p.post_options.featured_image }}" alt="" loading="lazy" /></div>
+          {%- else %}<div class="media media-fallback" aria-hidden="true"><span>{{ p.post_options.client | default: p.title | escape }}</span></div>{% endif %}
+          <div class="work-card-text">
+            <p class="card-meta">{% if p.post_options.client.size > 0 %}{{ p.post_options.client | escape }} · {% endif %}{{ p.published_at | strftime: "%Y" }}</p>
+            <h3 class="card-title">{{ p.title | escape }}</h3>
+          </div>
+        </a>
+      </article>
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+  {%- assign related_check = related_work | strip -%}
+  {%- if related_check != "" %}
+  <section class="section" aria-labelledby="related-work">
+    <div class="container">
+      <header class="section-head"><div class="section-head-main"><p class="eyebrow">{{ tk.work_tag | escape }}</p><h2 class="section-title" id="related-work">Related projects</h2></div></header>
+      <div class="work-grid work-standard">{{ related_work }}</div>
+    </div>
+  </section>
+  {%- endif %}
+
+  {%- elsif kind == "case" -%}
+  {%- comment -%} Case study: metrics, the four-part story, prose, gallery. {%- endcomment -%}
+  {%- capture metrics -%}{%- for m in po.metrics -%}{%- if m.value.size > 0 %}<div class="stat reveal"><dt>{{ m.label | escape }}</dt><dd>{{ m.value | escape }}</dd></div>{% endif -%}{%- endfor -%}{%- endcapture -%}
+  {%- assign metrics_check = metrics | strip -%}
+  {%- if metrics_check != "" %}
+  <div class="section metrics-section">
+    <div class="container"><dl class="stats stats-standard">{{ metrics }}</dl></div>
+  </div>
+  {%- endif %}
+
+  {%- assign parts = "challenge,approach,solution,results" | split: "," -%}
+  {%- capture story -%}
+    {%- for part in parts -%}
+      {%- assign text = po[part] -%}
+      {%- if text.size > 0 %}
+      <section class="story-row reveal" aria-labelledby="story-{{ part }}">
+        <h2 class="story-label" id="story-{{ part }}">{{ part | capitalize }}</h2>
+        <div class="story-text">{% assign paras = text | split: nl %}{% for para in paras %}{% assign para_s = para | strip %}{% if para_s != "" %}<p>{{ para_s | escape }}</p>{% endif %}{% endfor %}</div>
+      </section>
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+  {%- assign story_check = story | strip -%}
+  {%- if story_check != "" %}<div class="section"><div class="container story">{{ story }}</div></div>{% endif %}
+
+  {%- if body_check != "" %}
+  <div class="section"><div class="container"><div class="prose{% if po.full_width %} prose-wide{% endif %}">{{ body_html }}</div></div></div>
+  {%- endif %}
+
+  {%- if po.gallery.size > 0 %}
+  <div class="section">
+    <div class="container gallery">
+      {%- for g in po.gallery -%}{%- if g.image.size > 0 %}
+      <figure class="gallery-item reveal{% if g.wide %} is-wide{% endif %}">
+        <div class="media"><img src="{{ g.image }}" alt="{{ g.alt | escape }}" loading="lazy" /></div>
+        {%- if g.caption.size > 0 %}<figcaption>{{ g.caption | escape }}</figcaption>{% endif %}
+      </figure>
+      {%- endif -%}{%- endfor %}
+    </div>
+  </div>
+  {%- endif %}
+
+  {%- else -%}
+  {%- comment -%} Journal article. {%- endcomment -%}
+  <div class="section">
+    <div class="container"><div class="prose{% if po.full_width %} prose-wide{% endif %}">{{ body_html }}</div></div>
+  </div>
+  {%- endif %}
+</article>
+{%- endif -%}
+
+{%- if quotes_check != "" %}
+<section class="section" aria-labelledby="related-quotes">
+  <div class="container">
+    <header class="section-head"><div class="section-head-main"><h2 class="section-title" id="related-quotes">In their words</h2></div></header>
+    <div class="quotes quotes-alternate">{{ related_quotes }}</div>
+  </div>
+</section>
+{%- endif %}
+
+{%- comment -%} Keep reading: siblings of the same kind. {%- endcomment -%}
+{%- if kind == "service" -%}{%- assign siblings = posts_by_tag[tag_services] -%}{%- assign more_title = "Other services" -%}
+{%- elsif kind == "case" -%}{%- assign siblings = posts_by_tag[tag_work] -%}{%- assign more_title = "More work" -%}
+{%- elsif kind == "team" -%}{%- assign siblings = posts_by_tag[tag_team] -%}{%- assign more_title = "The rest of the team" -%}
+{%- else -%}{%- assign siblings = nil -%}{%- endif -%}
+{%- capture more -%}
+  {%- assign shown = 0 -%}
+  {%- for p in siblings -%}
+    {%- if p.slug == post.slug %}{% continue %}{% endif -%}
+    {%- if shown >= 6 %}{% break %}{% endif -%}
+    {%- assign shown = shown | plus: 1 %}
+    <li><a href="{{ p.url }}"><span>{{ p.title | escape }}</span>{% if kind == "case" %}<span class="index-client">{{ p.post_options.client | escape }}</span>{% elsif kind == "team" %}<span class="index-client">{{ p.post_options.role | escape }}</span>{% endif %}<span class="arrow" aria-hidden="true">→</span></a></li>
+  {%- endfor -%}
+{%- endcapture -%}
+{%- assign more_check = more | strip -%}
+{%- if more_check != "" %}
+<nav class="section more" aria-labelledby="more-title">
+  <div class="container">
+    <header class="section-head"><div class="section-head-main"><h2 class="section-title" id="more-title">{{ more_title }}</h2></div>{% if parent_url.size > 0 %}<div class="section-head-aside"><a class="link-arrow" href="{{ parent_url | escape }}">See all<span class="arrow" aria-hidden="true">→</span></a></div>{% endif %}</header>
+    <ul class="index-list">{{ more }}</ul>
+  </div>
+</nav>
+{%- elsif kind == "article" and tk.journal_url.size > 0 %}
+<div class="section more">
+  <div class="container"><a class="link-arrow link-back" href="{{ tk.journal_url | escape }}"><span class="arrow" aria-hidden="true">←</span>Back to the journal</a></div>
+</div>
+{%- endif -%}

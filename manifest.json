@@ -1,0 +1,1416 @@
+{
+  "name": "Bureau",
+  "slug": "bureau",
+  "version": "1.0.1",
+  "render_version": "v1",
+  "author": "Masthead",
+  "description": "An editorial business theme for studios, agencies, consultants and independent businesses. Services, case studies, team and testimonials managed as content; every section, colour and measure exposed as a setting.",
+  "tokens": [
+    {
+      "key": "logo",
+      "label": "Logo",
+      "type": "file",
+      "default": "",
+      "description": "Leave empty to set your business name as a typographic wordmark.",
+      "category": "Brand"
+    },
+    {
+      "key": "logo_height",
+      "label": "Logo height",
+      "type": "length",
+      "default": "28px",
+      "category": "Brand"
+    },
+    {
+      "key": "favicon",
+      "label": "Favicon",
+      "type": "file",
+      "default": "",
+      "category": "Brand"
+    },
+    {
+      "key": "primary",
+      "label": "Primary",
+      "type": "color",
+      "default": "#1f3b2d",
+      "description": "Buttons, links and primary bands.",
+      "category": "Colours"
+    },
+    {
+      "key": "on_primary",
+      "label": "Text on primary",
+      "type": "color",
+      "default": "#f5f3ee",
+      "description": "Must contrast with Primary.",
+      "category": "Colours"
+    },
+    {
+      "key": "secondary",
+      "label": "Secondary / accent",
+      "type": "color",
+      "default": "#b4502a",
+      "description": "Small accents: eyebrow markers, emphasised words, hover states.",
+      "category": "Colours"
+    },
+    {
+      "key": "background",
+      "label": "Background",
+      "type": "color",
+      "default": "#f5f3ee",
+      "category": "Colours"
+    },
+    {
+      "key": "surface",
+      "label": "Surface",
+      "type": "color",
+      "default": "#ebe7df",
+      "description": "Tinted bands, image placeholders and cards.",
+      "category": "Colours"
+    },
+    {
+      "key": "text",
+      "label": "Text",
+      "type": "color",
+      "default": "#171614",
+      "description": "Also the background of dark bands.",
+      "category": "Colours"
+    },
+    {
+      "key": "muted",
+      "label": "Muted text",
+      "type": "color",
+      "default": "#5f5b54",
+      "category": "Colours"
+    },
+    {
+      "key": "border",
+      "label": "Borders & dividers",
+      "type": "color",
+      "default": "#d8d3c9",
+      "category": "Colours"
+    },
+    {
+      "key": "display_font",
+      "label": "Display font",
+      "type": "select",
+      "options": [
+        "Instrument Serif",
+        "Fraunces",
+        "Newsreader",
+        "Playfair Display",
+        "Cormorant Garamond",
+        "EB Garamond",
+        "Source Serif 4",
+        "DM Serif Display",
+        "Inter",
+        "Inter Tight",
+        "Instrument Sans",
+        "DM Sans",
+        "Manrope",
+        "IBM Plex Sans",
+        "Space Grotesk",
+        "Work Sans",
+        "Syne",
+        "System sans",
+        "System serif"
+      ],
+      "default": "Instrument Serif",
+      "description": "Hero headlines, section titles, quotes and numbers.",
+      "category": "Typography"
+    },
+    {
+      "key": "heading_font",
+      "label": "Heading font",
+      "type": "select",
+      "options": [
+        "Instrument Serif",
+        "Fraunces",
+        "Newsreader",
+        "Playfair Display",
+        "Cormorant Garamond",
+        "EB Garamond",
+        "Source Serif 4",
+        "DM Serif Display",
+        "Inter",
+        "Inter Tight",
+        "Instrument Sans",
+        "DM Sans",
+        "Manrope",
+        "IBM Plex Sans",
+        "Space Grotesk",
+        "Work Sans",
+        "Syne",
+        "System sans",
+        "System serif"
+      ],
+      "default": "Inter Tight",
+      "description": "Card titles, sub-headings and the wordmark.",
+      "category": "Typography"
+    },
+    {
+      "key": "body_font",
+      "label": "Body font",
+      "type": "select",
+      "options": [
+        "Instrument Serif",
+        "Fraunces",
+        "Newsreader",
+        "Playfair Display",
+        "Cormorant Garamond",
+        "EB Garamond",
+        "Source Serif 4",
+        "DM Serif Display",
+        "Inter",
+        "Inter Tight",
+        "Instrument Sans",
+        "DM Sans",
+        "Manrope",
+        "IBM Plex Sans",
+        "Space Grotesk",
+        "Work Sans",
+        "Syne",
+        "System sans",
+        "System serif"
+      ],
+      "default": "Inter",
+      "category": "Typography"
+    },
+    {
+      "key": "base_size",
+      "label": "Base font size",
+      "type": "length",
+      "default": "17px",
+      "category": "Typography"
+    },
+    {
+      "key": "type_scale",
+      "label": "Type scale",
+      "type": "select",
+      "options": [
+        "balanced",
+        "subtle",
+        "dramatic"
+      ],
+      "default": "balanced",
+      "description": "How large display type grows on wide screens.",
+      "category": "Typography"
+    },
+    {
+      "key": "display_weight",
+      "label": "Display weight",
+      "type": "select",
+      "options": [
+        "400",
+        "300",
+        "500",
+        "600",
+        "700"
+      ],
+      "default": "400",
+      "category": "Typography"
+    },
+    {
+      "key": "heading_weight",
+      "label": "Heading weight",
+      "type": "select",
+      "options": [
+        "500",
+        "400",
+        "600",
+        "700"
+      ],
+      "default": "500",
+      "category": "Typography"
+    },
+    {
+      "key": "eyebrow_style",
+      "label": "Eyebrow style",
+      "type": "select",
+      "options": [
+        "uppercase",
+        "sentence case"
+      ],
+      "default": "uppercase",
+      "category": "Typography"
+    },
+    {
+      "key": "page_width",
+      "label": "Page width",
+      "type": "length",
+      "default": "1320px",
+      "category": "Layout"
+    },
+    {
+      "key": "content_width",
+      "label": "Content width",
+      "type": "length",
+      "default": "42rem",
+      "description": "Reading measure for articles and long-form text.",
+      "category": "Layout"
+    },
+    {
+      "key": "container_padding",
+      "label": "Container padding",
+      "type": "length",
+      "default": "clamp(1.25rem, 4vw, 3rem)",
+      "description": "Side gutters. clamp() keeps them fluid between phone and desktop.",
+      "category": "Layout"
+    },
+    {
+      "key": "section_spacing",
+      "label": "Section spacing",
+      "type": "length",
+      "default": "clamp(4.5rem, 10vw, 9rem)",
+      "category": "Layout"
+    },
+    {
+      "key": "hero_spacing",
+      "label": "Hero spacing",
+      "type": "length",
+      "default": "clamp(3.5rem, 9vw, 8rem)",
+      "category": "Layout"
+    },
+    {
+      "key": "grid_gap",
+      "label": "Grid gap",
+      "type": "length",
+      "default": "clamp(1.25rem, 3vw, 2.5rem)",
+      "category": "Layout"
+    },
+    {
+      "key": "dividers",
+      "label": "Hairlines between sections",
+      "type": "boolean",
+      "default": true,
+      "category": "Layout"
+    },
+    {
+      "key": "header_height",
+      "label": "Header height",
+      "type": "length",
+      "default": "76px",
+      "category": "Header & navigation"
+    },
+    {
+      "key": "nav_spacing",
+      "label": "Navigation spacing",
+      "type": "length",
+      "default": "2.25rem",
+      "category": "Header & navigation"
+    },
+    {
+      "key": "header_sticky",
+      "label": "Sticky header",
+      "type": "boolean",
+      "default": true,
+      "category": "Header & navigation"
+    },
+    {
+      "key": "header_cta",
+      "label": "Show call to action in header",
+      "type": "boolean",
+      "default": true,
+      "category": "Header & navigation"
+    },
+    {
+      "key": "nav",
+      "label": "Navigation",
+      "type": "list",
+      "item_label": "Link",
+      "fields": [
+        {
+          "key": "label",
+          "label": "Label",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "key": "url",
+          "label": "URL",
+          "type": "string",
+          "default": ""
+        }
+      ],
+      "default": [
+        {
+          "label": "Home",
+          "url": "/"
+        },
+        {
+          "label": "Services",
+          "url": "/services"
+        },
+        {
+          "label": "Work",
+          "url": "/work"
+        },
+        {
+          "label": "About",
+          "url": "/about"
+        },
+        {
+          "label": "Contact",
+          "url": "/contact"
+        }
+      ],
+      "description": "Leave empty to list your published pages instead.",
+      "category": "Header & navigation"
+    },
+    {
+      "key": "radius",
+      "label": "Corner radius",
+      "type": "length",
+      "default": "2px",
+      "description": "Cards, panels and form-like elements.",
+      "category": "Shape & buttons"
+    },
+    {
+      "key": "button_radius",
+      "label": "Button radius",
+      "type": "length",
+      "default": "999px",
+      "category": "Shape & buttons"
+    },
+    {
+      "key": "image_radius",
+      "label": "Image radius",
+      "type": "length",
+      "default": "0px",
+      "category": "Shape & buttons"
+    },
+    {
+      "key": "button_style",
+      "label": "Button style",
+      "type": "select",
+      "options": [
+        "solid",
+        "outline",
+        "text"
+      ],
+      "default": "solid",
+      "category": "Shape & buttons"
+    },
+    {
+      "key": "button_case",
+      "label": "Button lettering",
+      "type": "select",
+      "options": [
+        "normal",
+        "uppercase"
+      ],
+      "default": "normal",
+      "category": "Shape & buttons"
+    },
+    {
+      "key": "button_arrow",
+      "label": "Arrow on buttons",
+      "type": "boolean",
+      "default": true,
+      "category": "Shape & buttons"
+    },
+    {
+      "key": "image_ratio",
+      "label": "Card image ratio",
+      "type": "select",
+      "options": [
+        "4:3",
+        "3:2",
+        "1:1",
+        "4:5",
+        "16:9"
+      ],
+      "default": "4:3",
+      "category": "Images & motion"
+    },
+    {
+      "key": "image_treatment",
+      "label": "Image treatment",
+      "type": "select",
+      "options": [
+        "natural",
+        "monochrome",
+        "monochrome until hover"
+      ],
+      "default": "natural",
+      "category": "Images & motion"
+    },
+    {
+      "key": "motion",
+      "label": "Subtle motion",
+      "type": "boolean",
+      "default": true,
+      "description": "Gentle reveals and hover states. Always off for visitors who prefer reduced motion.",
+      "category": "Images & motion"
+    },
+    {
+      "key": "cta_label",
+      "label": "Primary button label",
+      "type": "string",
+      "default": "Start a project",
+      "description": "Used in the header, the closing band and as the default enquiry button.",
+      "category": "Call to action"
+    },
+    {
+      "key": "cta_url",
+      "label": "Primary button link",
+      "type": "string",
+      "default": "/contact",
+      "category": "Call to action"
+    },
+    {
+      "key": "cta_eyebrow",
+      "label": "Closing band eyebrow",
+      "type": "string",
+      "default": "Next step",
+      "category": "Call to action"
+    },
+    {
+      "key": "cta_heading",
+      "label": "Closing band heading",
+      "type": "string",
+      "default": "Have something worth doing properly?",
+      "description": "The band shown above the footer. Clear it to hide the band site-wide.",
+      "category": "Call to action"
+    },
+    {
+      "key": "cta_body",
+      "label": "Closing band text",
+      "type": "text",
+      "default": "Tell us where you are and where you want to be. We reply to every enquiry within two working days.",
+      "category": "Call to action"
+    },
+    {
+      "key": "cta_tone",
+      "label": "Closing band background",
+      "type": "select",
+      "options": [
+        "default",
+        "surface",
+        "dark",
+        "primary"
+      ],
+      "default": "default",
+      "category": "Call to action"
+    },
+    {
+      "key": "email",
+      "label": "Email",
+      "type": "string",
+      "default": "",
+      "category": "Contact"
+    },
+    {
+      "key": "phone",
+      "label": "Phone",
+      "type": "string",
+      "default": "",
+      "category": "Contact"
+    },
+    {
+      "key": "address",
+      "label": "Address",
+      "type": "text",
+      "default": "",
+      "category": "Contact"
+    },
+    {
+      "key": "hours",
+      "label": "Opening hours",
+      "type": "text",
+      "default": "",
+      "category": "Contact"
+    },
+    {
+      "key": "map_embed",
+      "label": "Map embed URL",
+      "type": "string",
+      "default": "",
+      "description": "An https:// embed link (Google Maps “Embed a map” or OpenStreetMap). Shown on the contact section.",
+      "category": "Contact"
+    },
+    {
+      "key": "social",
+      "label": "Social links",
+      "type": "list",
+      "item_label": "Profile",
+      "fields": [
+        {
+          "key": "label",
+          "label": "Label",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "key": "url",
+          "label": "URL",
+          "type": "string",
+          "default": ""
+        }
+      ],
+      "default": [],
+      "category": "Contact"
+    },
+    {
+      "key": "stats",
+      "label": "Statistics",
+      "type": "list",
+      "item_label": "Statistic",
+      "fields": [
+        {
+          "key": "value",
+          "label": "Value",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "key": "label",
+          "label": "Label",
+          "type": "string",
+          "default": ""
+        }
+      ],
+      "default": [],
+      "description": "Shown by any Statistics section.",
+      "category": "Proof"
+    },
+    {
+      "key": "clients",
+      "label": "Clients",
+      "type": "list",
+      "item_label": "Client",
+      "fields": [
+        {
+          "key": "name",
+          "label": "Name",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "key": "logo",
+          "label": "Logo",
+          "type": "file",
+          "default": ""
+        },
+        {
+          "key": "url",
+          "label": "Link",
+          "type": "string",
+          "default": ""
+        }
+      ],
+      "default": [],
+      "description": "Shown by any Clients section. Without a logo the name is set in type.",
+      "category": "Proof"
+    },
+    {
+      "key": "footer_text",
+      "label": "Footer introduction",
+      "type": "text",
+      "default": "",
+      "description": "Defaults to the site description.",
+      "category": "Footer"
+    },
+    {
+      "key": "footer_tone",
+      "label": "Footer background",
+      "type": "select",
+      "options": [
+        "dark",
+        "default",
+        "surface",
+        "primary"
+      ],
+      "default": "dark",
+      "category": "Footer"
+    },
+    {
+      "key": "footer_links",
+      "label": "Footer links",
+      "type": "list",
+      "item_label": "Link",
+      "fields": [
+        {
+          "key": "label",
+          "label": "Label",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "key": "url",
+          "label": "URL",
+          "type": "string",
+          "default": ""
+        }
+      ],
+      "default": [],
+      "category": "Footer"
+    },
+    {
+      "key": "footer_note",
+      "label": "Copyright line",
+      "type": "string",
+      "default": "",
+      "description": "Defaults to “© year Business name”.",
+      "category": "Footer"
+    },
+    {
+      "key": "services_tag",
+      "label": "Services tag",
+      "type": "string",
+      "default": "Services",
+      "description": "Posts with this tag are services.",
+      "category": "Content structure"
+    },
+    {
+      "key": "services_url",
+      "label": "Services page",
+      "type": "string",
+      "default": "/services",
+      "category": "Content structure"
+    },
+    {
+      "key": "work_tag",
+      "label": "Case studies tag",
+      "type": "string",
+      "default": "Work",
+      "category": "Content structure"
+    },
+    {
+      "key": "work_url",
+      "label": "Work page",
+      "type": "string",
+      "default": "/work",
+      "category": "Content structure"
+    },
+    {
+      "key": "team_tag",
+      "label": "Team tag",
+      "type": "string",
+      "default": "Team",
+      "category": "Content structure"
+    },
+    {
+      "key": "team_url",
+      "label": "Team page",
+      "type": "string",
+      "default": "/about",
+      "category": "Content structure"
+    },
+    {
+      "key": "testimonials_tag",
+      "label": "Testimonials tag",
+      "type": "string",
+      "default": "Testimonials",
+      "category": "Content structure"
+    },
+    {
+      "key": "journal_url",
+      "label": "Journal page",
+      "type": "string",
+      "default": "/journal",
+      "description": "Untagged posts are journal articles.",
+      "category": "Content structure"
+    }
+  ],
+  "page_options": [
+    {
+      "key": "show_title",
+      "label": "Show hero",
+      "type": "boolean",
+      "default": true,
+      "description": "Untick to hide the title block (it stays available to screen readers).",
+      "category": "Hero"
+    },
+    {
+      "key": "hero_style",
+      "label": "Hero style",
+      "type": "select",
+      "options": [
+        "editorial",
+        "split",
+        "banner",
+        "minimal"
+      ],
+      "default": "editorial",
+      "description": "Editorial: large type, image below. Split: text beside image. Banner: text over image. Minimal: compact title.",
+      "category": "Hero"
+    },
+    {
+      "key": "hero_align",
+      "label": "Hero alignment",
+      "type": "select",
+      "options": [
+        "left",
+        "center"
+      ],
+      "default": "left",
+      "category": "Hero"
+    },
+    {
+      "key": "eyebrow",
+      "label": "Eyebrow",
+      "type": "string",
+      "default": "",
+      "category": "Hero"
+    },
+    {
+      "key": "headline",
+      "label": "Headline",
+      "type": "string",
+      "default": "",
+      "description": "Defaults to the page title.",
+      "category": "Hero"
+    },
+    {
+      "key": "emphasis",
+      "label": "Emphasised words",
+      "type": "string",
+      "default": "",
+      "description": "Words from the headline to set in italic accent.",
+      "category": "Hero"
+    },
+    {
+      "key": "intro",
+      "label": "Introduction",
+      "type": "text",
+      "default": "",
+      "category": "Hero"
+    },
+    {
+      "key": "hero_image",
+      "label": "Hero image",
+      "type": "file",
+      "default": "",
+      "category": "Hero"
+    },
+    {
+      "key": "hero_image_alt",
+      "label": "Hero image description",
+      "type": "string",
+      "default": "",
+      "category": "Hero"
+    },
+    {
+      "key": "hero_image_position",
+      "label": "Hero image focal point",
+      "type": "select",
+      "options": [
+        "center",
+        "top",
+        "bottom",
+        "left",
+        "right"
+      ],
+      "default": "center",
+      "category": "Hero"
+    },
+    {
+      "key": "primary_label",
+      "label": "Primary button",
+      "type": "string",
+      "default": "",
+      "category": "Hero"
+    },
+    {
+      "key": "primary_url",
+      "label": "Primary button link",
+      "type": "string",
+      "default": "",
+      "category": "Hero"
+    },
+    {
+      "key": "secondary_label",
+      "label": "Secondary button",
+      "type": "string",
+      "default": "",
+      "category": "Hero"
+    },
+    {
+      "key": "secondary_url",
+      "label": "Secondary button link",
+      "type": "string",
+      "default": "",
+      "category": "Hero"
+    },
+    {
+      "key": "page_width",
+      "label": "Page width",
+      "type": "select",
+      "options": [
+        "standard",
+        "narrow",
+        "wide",
+        "full"
+      ],
+      "default": "standard",
+      "category": "Page"
+    },
+    {
+      "key": "background",
+      "label": "Background",
+      "type": "select",
+      "options": [
+        "default",
+        "surface",
+        "dark",
+        "primary"
+      ],
+      "default": "default",
+      "category": "Page"
+    },
+    {
+      "key": "accent_style",
+      "label": "Accent",
+      "type": "select",
+      "options": [
+        "secondary",
+        "primary",
+        "monochrome"
+      ],
+      "default": "secondary",
+      "category": "Page"
+    },
+    {
+      "key": "show_navigation",
+      "label": "Show navigation",
+      "type": "boolean",
+      "default": true,
+      "category": "Page"
+    },
+    {
+      "key": "show_breadcrumbs",
+      "label": "Show breadcrumbs",
+      "type": "boolean",
+      "default": true,
+      "category": "Page"
+    },
+    {
+      "key": "show_cta",
+      "label": "Show closing call to action",
+      "type": "boolean",
+      "default": true,
+      "category": "Page"
+    },
+    {
+      "key": "show_footer",
+      "label": "Show footer",
+      "type": "boolean",
+      "default": true,
+      "category": "Page"
+    },
+    {
+      "key": "sections",
+      "label": "Sections",
+      "type": "list",
+      "item_label": "Section",
+      "category": "Sections",
+      "description": "Build the page from sections. Drag to reorder. Untick Show to hide one without losing it. A section with nothing to show is left out.",
+      "fields": [
+        {
+          "key": "show",
+          "label": "Show",
+          "type": "boolean",
+          "default": true
+        },
+        {
+          "key": "type",
+          "label": "Type",
+          "type": "select",
+          "options": [
+            "text",
+            "services",
+            "work",
+            "testimonials",
+            "team",
+            "clients",
+            "stats",
+            "points",
+            "faq",
+            "contact",
+            "journal",
+            "cta"
+          ],
+          "default": "text",
+          "description": "Text = about, story or mission copy. Points = values or process (from Points below). FAQ uses Questions below. Stats, clients and contact come from site settings."
+        },
+        {
+          "key": "layout",
+          "label": "Layout",
+          "type": "select",
+          "options": [
+            "standard",
+            "alternate",
+            "compact"
+          ],
+          "default": "standard",
+          "description": "Services: list · cards · index. Work: grid · alternating · index. Testimonials: lead quote · grid · single quote. Team: portraits · rows · names. Text: image right · image left · statement. Clients: logos · name wall. Stats & points: columns · rows. Journal: cards · list · titles. Contact: everything · email & phone."
+        },
+        {
+          "key": "eyebrow",
+          "label": "Eyebrow",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "key": "title",
+          "label": "Title",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "key": "body",
+          "label": "Text",
+          "type": "text",
+          "default": ""
+        },
+        {
+          "key": "image",
+          "label": "Image",
+          "type": "file",
+          "default": ""
+        },
+        {
+          "key": "image_alt",
+          "label": "Image description",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "key": "count",
+          "label": "Max items",
+          "type": "number",
+          "default": 0,
+          "description": "0 shows everything."
+        },
+        {
+          "key": "featured_only",
+          "label": "Featured items only",
+          "type": "boolean",
+          "default": false
+        },
+        {
+          "key": "background",
+          "label": "Background",
+          "type": "select",
+          "options": [
+            "default",
+            "surface",
+            "dark",
+            "primary"
+          ],
+          "default": "default"
+        },
+        {
+          "key": "link_label",
+          "label": "Link label",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "key": "link_url",
+          "label": "Link URL",
+          "type": "string",
+          "default": ""
+        }
+      ],
+      "default": []
+    },
+    {
+      "key": "faq",
+      "label": "Questions",
+      "type": "list",
+      "item_label": "Question",
+      "category": "Sections",
+      "fields": [
+        {
+          "key": "question",
+          "label": "Question",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "key": "answer",
+          "label": "Answer",
+          "type": "text",
+          "default": ""
+        }
+      ],
+      "default": []
+    },
+    {
+      "key": "points",
+      "label": "Points",
+      "type": "list",
+      "item_label": "Point",
+      "category": "Sections",
+      "description": "Values, principles or process steps for a Points section.",
+      "fields": [
+        {
+          "key": "title",
+          "label": "Title",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "key": "body",
+          "label": "Text",
+          "type": "text",
+          "default": ""
+        }
+      ],
+      "default": []
+    }
+  ],
+  "post_options": [
+    {
+      "key": "eyebrow",
+      "label": "Eyebrow",
+      "type": "string",
+      "default": "",
+      "description": "Small label above the title.",
+      "category": "Presentation"
+    },
+    {
+      "key": "subtitle",
+      "label": "Subtitle",
+      "type": "text",
+      "default": "",
+      "description": "Standfirst under the title. Defaults to the excerpt.",
+      "category": "Presentation"
+    },
+    {
+      "key": "featured_image",
+      "label": "Featured image",
+      "type": "file",
+      "default": "",
+      "description": "Cover image; a portrait for team members and quotes.",
+      "category": "Presentation"
+    },
+    {
+      "key": "image_alt",
+      "label": "Image description",
+      "type": "string",
+      "default": "",
+      "description": "Alt text. Leave empty if the image is decorative.",
+      "category": "Presentation"
+    },
+    {
+      "key": "image_position",
+      "label": "Image position",
+      "type": "select",
+      "options": [
+        "below title",
+        "beside title",
+        "full bleed",
+        "above title"
+      ],
+      "default": "below title",
+      "category": "Presentation"
+    },
+    {
+      "key": "image_focus",
+      "label": "Image focal point",
+      "type": "select",
+      "options": [
+        "center",
+        "top",
+        "bottom",
+        "left",
+        "right"
+      ],
+      "default": "center",
+      "category": "Presentation"
+    },
+    {
+      "key": "show_image",
+      "label": "Show image on the page",
+      "type": "boolean",
+      "default": true,
+      "category": "Presentation"
+    },
+    {
+      "key": "show_title",
+      "label": "Show title",
+      "type": "boolean",
+      "default": true,
+      "category": "Presentation"
+    },
+    {
+      "key": "show_meta",
+      "label": "Show details line",
+      "type": "boolean",
+      "default": true,
+      "description": "Date, client, price or role under the title.",
+      "category": "Presentation"
+    },
+    {
+      "key": "full_width",
+      "label": "Full-width content",
+      "type": "boolean",
+      "default": false,
+      "category": "Presentation"
+    },
+    {
+      "key": "variant",
+      "label": "Header background",
+      "type": "select",
+      "options": [
+        "default",
+        "surface",
+        "dark",
+        "primary"
+      ],
+      "default": "default",
+      "category": "Presentation"
+    },
+    {
+      "key": "accent_style",
+      "label": "Accent",
+      "type": "select",
+      "options": [
+        "secondary",
+        "primary",
+        "monochrome"
+      ],
+      "default": "secondary",
+      "category": "Presentation"
+    },
+    {
+      "key": "featured",
+      "label": "Featured",
+      "type": "boolean",
+      "default": false,
+      "description": "Featured items lead their sections and can be filtered for on any page.",
+      "category": "Listing"
+    },
+    {
+      "key": "card_layout",
+      "label": "Card layout",
+      "type": "select",
+      "options": [
+        "standard",
+        "large",
+        "text only"
+      ],
+      "default": "standard",
+      "description": "How this item appears in grids. Large spans the full row.",
+      "category": "Listing"
+    },
+    {
+      "key": "cta_label",
+      "label": "Button label",
+      "type": "string",
+      "default": "",
+      "description": "Defaults to the site's primary call to action.",
+      "category": "Call to action"
+    },
+    {
+      "key": "cta_url",
+      "label": "Button link",
+      "type": "string",
+      "default": "",
+      "category": "Call to action"
+    },
+    {
+      "key": "external_url",
+      "label": "External link",
+      "type": "string",
+      "default": "",
+      "description": "A live site or publication, shown as a “Visit” link.",
+      "category": "Call to action"
+    },
+    {
+      "key": "price",
+      "label": "Starting price",
+      "type": "string",
+      "default": "",
+      "description": "e.g. From €8,000",
+      "category": "Service"
+    },
+    {
+      "key": "duration",
+      "label": "Typical duration",
+      "type": "string",
+      "default": "",
+      "description": "e.g. 6–8 weeks",
+      "category": "Service"
+    },
+    {
+      "key": "includes",
+      "label": "What's included",
+      "type": "text",
+      "default": "",
+      "description": "One item per line.",
+      "category": "Service"
+    },
+    {
+      "key": "icon",
+      "label": "Icon",
+      "type": "file",
+      "default": "",
+      "description": "Optional small mark. Services are numbered when empty.",
+      "category": "Service"
+    },
+    {
+      "key": "client",
+      "label": "Client / company",
+      "type": "string",
+      "default": "",
+      "description": "Also the company on a testimonial.",
+      "category": "Case study"
+    },
+    {
+      "key": "logo",
+      "label": "Client logo",
+      "type": "file",
+      "default": "",
+      "category": "Case study"
+    },
+    {
+      "key": "services_used",
+      "label": "Services used",
+      "type": "text",
+      "default": "",
+      "description": "One per line. Matching service titles link both ways.",
+      "category": "Case study"
+    },
+    {
+      "key": "challenge",
+      "label": "Challenge",
+      "type": "text",
+      "default": "",
+      "category": "Case study"
+    },
+    {
+      "key": "approach",
+      "label": "Approach",
+      "type": "text",
+      "default": "",
+      "category": "Case study"
+    },
+    {
+      "key": "solution",
+      "label": "Solution",
+      "type": "text",
+      "default": "",
+      "category": "Case study"
+    },
+    {
+      "key": "results",
+      "label": "Results",
+      "type": "text",
+      "default": "",
+      "category": "Case study"
+    },
+    {
+      "key": "metrics",
+      "label": "Metrics",
+      "type": "list",
+      "item_label": "Metric",
+      "fields": [
+        {
+          "key": "value",
+          "label": "Value",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "key": "label",
+          "label": "Label",
+          "type": "string",
+          "default": ""
+        }
+      ],
+      "default": [],
+      "category": "Case study"
+    },
+    {
+      "key": "gallery",
+      "label": "Gallery",
+      "type": "list",
+      "item_label": "Image",
+      "fields": [
+        {
+          "key": "image",
+          "label": "Image",
+          "type": "file",
+          "default": ""
+        },
+        {
+          "key": "alt",
+          "label": "Description",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "key": "caption",
+          "label": "Caption",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "key": "wide",
+          "label": "Full width",
+          "type": "boolean",
+          "default": false
+        }
+      ],
+      "default": [],
+      "category": "Case study"
+    },
+    {
+      "key": "role",
+      "label": "Role",
+      "type": "string",
+      "default": "",
+      "description": "Job title of a team member or the person quoted.",
+      "category": "People & quotes"
+    },
+    {
+      "key": "quote",
+      "label": "Quote",
+      "type": "text",
+      "default": "",
+      "description": "Testimonials: the quote itself. The post title is the person's name.",
+      "category": "People & quotes"
+    },
+    {
+      "key": "related",
+      "label": "Shown on",
+      "type": "string",
+      "default": "",
+      "description": "Testimonials: slugs of the services, case studies or team members this quote belongs to, comma separated.",
+      "category": "People & quotes"
+    },
+    {
+      "key": "socials",
+      "label": "Profiles",
+      "type": "list",
+      "item_label": "Profile",
+      "fields": [
+        {
+          "key": "label",
+          "label": "Label",
+          "type": "string",
+          "default": ""
+        },
+        {
+          "key": "url",
+          "label": "URL",
+          "type": "string",
+          "default": ""
+        }
+      ],
+      "default": [],
+      "category": "People & quotes"
+    },
+    {
+      "key": "seo_description",
+      "label": "Search description",
+      "type": "text",
+      "default": "",
+      "description": "Overrides the excerpt in the meta description.",
+      "category": "Search"
+    }
+  ]
+}

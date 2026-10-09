@@ -1,0 +1,6 @@
+{%- assign body_check = body_html | strip -%}
+{%- if body_check != "" %}
+<div class="section page-body">
+  <div class="container"><div class="prose">{{ body_html }}</div></div>
+</div>
+{%- endif -%}
